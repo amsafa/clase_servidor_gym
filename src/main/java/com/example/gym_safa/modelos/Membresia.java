@@ -2,7 +2,7 @@ package com.example.gym_safa.modelos;
 
 import jakarta.persistence.*;
 import lombok.*;
-import  com.example.gym_safa.Enumerados.*;
+import  com.example.gym_safa.enumerados.*;
 
 @Entity
 @Table(name = "membresias", schema = "gym_db", catalog = "postgres")
@@ -12,7 +12,7 @@ import  com.example.gym_safa.Enumerados.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class Membresias {
+public class Membresia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

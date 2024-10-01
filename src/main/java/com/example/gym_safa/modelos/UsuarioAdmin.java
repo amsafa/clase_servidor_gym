@@ -1,7 +1,7 @@
 package com.example.gym_safa.modelos;
 
 
-import com.example.gym_safa.Enumerados.TipoUsuario;
+import com.example.gym_safa.enumerados.TipoUsuario;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,7 +14,7 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 
-public class Usuarios_Admin {
+public class UsuarioAdmin {
 
     @Id
     @Column(name = "admin_id")

@@ -1,7 +1,7 @@
 package com.example.gym_safa.modelos;
 
 
-import com.example.gym_safa.Enumerados.DiaSemana;
+import com.example.gym_safa.enumerados.DiaSemana;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @EqualsAndHashCode
 
-public class Asistencias {
+public class Asistencia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class Asistencias {
 
     @ManyToOne
     @JoinColumn(name = "socio_id", nullable = false)
-    private Socios socio;
+    private Socio socio;
 
     @Column(name = "fecha_asistencia", nullable = false)
     private LocalDate fecha;

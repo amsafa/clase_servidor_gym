@@ -1,9 +1,11 @@
 package com.example.gym_safa.repositorios;
 
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.gym_safa.modelos.Usuarios_Admin;
+import com.example.gym_safa.modelos.Socio;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UsuariosAdminRepository extends JpaRepository<Usuarios_Admin, Integer> {
+public interface SocioRepository extends JpaRepository<Socio, Integer> {
+
 }

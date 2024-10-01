@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class Socios {
+public class Socio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +40,7 @@ public class Socios {
 
     @ManyToOne
     @JoinColumn(name = "membresia_id")
-    private Membresias membresia;
+    private Membresia membresia;
 
     @Column(name = "fecha_registro", nullable = false)
     private LocalDate fecha_registro;

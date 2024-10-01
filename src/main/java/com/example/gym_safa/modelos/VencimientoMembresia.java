@@ -1,6 +1,6 @@
 package com.example.gym_safa.modelos;
 
-import com.example.gym_safa.Enumerados.TipoPago;
+import com.example.gym_safa.enumerados.TipoPago;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 @Entity
 
-public class Vencimientos_Membresias {
+public class VencimientoMembresia {
 
     @Id
     @Column(name = "vencimiento_id")
@@ -24,7 +24,7 @@ public class Vencimientos_Membresias {
 
     @ManyToOne
     @JoinColumn(name = "socio_id", nullable = false)
-    private Socios socio;
+    private Socio socio;
 
     @Column(name = "fecha_i", nullable = false)
     private LocalDate fecha_inicio;

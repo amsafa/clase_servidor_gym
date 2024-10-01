@@ -1,4 +1,4 @@
-package com.example.gym_safa.Enumerados;
+package com.example.gym_safa.enumerados;
 
 public enum NombreMembresia {
 
