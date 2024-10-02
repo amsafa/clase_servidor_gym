@@ -1,5 +1,6 @@
 package com.example.gym_safa.modelos;
 
+import com.example.gym_safa.enumerados.Estado;
 import com.example.gym_safa.enumerados.TipoPago;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,7 +23,7 @@ public class VencimientoMembresia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "socio_id", nullable = false)
     private Socio socio;
 
@@ -35,7 +36,7 @@ public class VencimientoMembresia {
 
     @Column (name = "estado")
     @Enumerated(EnumType.ORDINAL)
-    private TipoPago estado;
+    private Estado estado;
 
 
 }

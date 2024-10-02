@@ -5,7 +5,7 @@ import com.example.gym_safa.repositorios.PagoRepository;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 
-import java.util.List;
+
 
 @Service
 @AllArgsConstructor
@@ -14,15 +14,7 @@ public class PagoService {
 
     private PagoRepository pagoRepository;
 
-    /**
-     * Metodo que devuelve todos los pagos
-     *
-     * @return
-     */
-    public List<Pago> getAllPagos() {
-        List<Pago> pagos = pagoRepository.findAll();
-        return pagos;
-    }
+
 
     /**
      * Busca un pago por su id

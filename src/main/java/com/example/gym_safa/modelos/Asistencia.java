@@ -26,7 +26,7 @@ public class Asistencia {
     @Column(name = "asistencia_id" )
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "socio_id", nullable = false)
     private Socio socio;
 

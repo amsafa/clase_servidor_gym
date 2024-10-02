@@ -19,19 +19,7 @@ public class AsistenciaService {
     private AsistenciaRepository asistenciaRepository;
 
 
-    /**
-     * Metodo que devuelve todas las asistencias por días de la semana
-     *
-     * @param nombre
-     * @return
-     */
 
-    public List<Asistencia> getAllAsistencias(DiaSemana nombre) {
-
-        List<Asistencia> asistencias = asistenciaRepository.findAll();
-        return asistencias;
-
-    }
 
     /**
      * Busca una asistencia por su id
@@ -41,6 +29,7 @@ public class AsistenciaService {
      */
 
     public Asistencia getAsistenciasById(Integer id) {
+
         return asistenciaRepository.findById(id).orElse(null);
     }
 

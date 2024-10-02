@@ -19,7 +19,6 @@ public class SocioTest {
 
 
 
-
     @Test
     void testCrearSocios(){
         Socio socios = new Socio();
