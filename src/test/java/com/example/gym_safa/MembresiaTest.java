@@ -24,30 +24,25 @@ public class MembresiaTest {
 
     @Test
     void testCrearMembresia(){
-        //Recuperamos un socio de la base de datos
-        Socio socio = socioService.getSociosById(1);
-
         Membresia membresia = new Membresia();
         membresia.setNombre(NombreMembresia.BASIC);
         membresia.setDuracion_meses(1);
         membresia.setPrecio(50.00);
-
-
-        Membresia membresiaGuardado = membresiaService.saveMembresias(membresia);
+        Membresia membresiaGuardado = membresiaService.guardarMembresia(membresia);
         System.out.println(membresiaGuardado.toString());
     }
 
     @Test
     void testEditarMembresia() {
-        Membresia membresia = membresiaService.getMembresiasById(2);
-        membresia.setNombre(NombreMembresia.INTERMEDIO);
-        membresia.setDuracion_meses(3);
-        membresia.setPrecio(100.00);
+        Membresia membresia = membresiaService.getMembresiasById(15);
+        membresia.setNombre(NombreMembresia.INVENCIBLE);
+        membresia.setDuracion_meses(1);
+        membresia.setPrecio(150.00);
     }
 
     @Test
     void testEliminarMembresia(){
-        membresiaService.deleteMembresias(1);
+        membresiaService.borrarMembresiaPorId(1);
     }
 
     @Test

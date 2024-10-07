@@ -1,12 +1,9 @@
 package com.example.gym_safa.servicios;
 
 import com.example.gym_safa.modelos.Asistencia;
-import com.example.gym_safa.enumerados.DiaSemana;
 import com.example.gym_safa.repositorios.AsistenciaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 
 @Service
@@ -28,7 +25,7 @@ public class AsistenciaService {
      * @return
      */
 
-    public Asistencia getAsistenciasById(Integer id) {
+    public Asistencia getAsistenciaById(Integer id) {
 
         return asistenciaRepository.findById(id).orElse(null);
     }
@@ -39,7 +36,7 @@ public class AsistenciaService {
      * @param asistencia
      * @return
      */
-    public Asistencia saveAsistencias(Asistencia asistencia) {
+    public Asistencia guardarAsistencia(Asistencia asistencia) {
         return asistenciaRepository.save(asistencia);
     }
 
@@ -48,7 +45,7 @@ public class AsistenciaService {
      *
      * @param id
      */
-    public void deleteAsistencias(Integer id) {
+    public void borrarAsistenciaPorId(Integer id) {
         asistenciaRepository.deleteById(id);
     }
 

@@ -19,7 +19,7 @@ public class MembresiaService {
      * @param nombre
      * @return
      */
-    public List<Membresia> getAllMembresias(NombreMembresia nombre) {
+    public List<Membresia> getMembresiaByNombre(NombreMembresia nombre) {
 
         List<Membresia> membresias = membresiaRepository.findAll();
         return membresias;
@@ -43,7 +43,7 @@ public class MembresiaService {
      * @param membresia
      * @return
      */
-    public Membresia saveMembresias(Membresia membresia) {
+    public Membresia guardarMembresia(Membresia membresia) {
         return membresiaRepository.save(membresia);
     }
 
@@ -53,7 +53,7 @@ public class MembresiaService {
      * @param id
      * @return
      */
-    public void deleteMembresias(Integer id) {
+    public void borrarMembresiaPorId(Integer id) {
         membresiaRepository.deleteById(id);
 
     }
@@ -64,7 +64,8 @@ public class MembresiaService {
      * @param membresia
      * @return
      */
-    public void deleteAllMembresias(Membresia membresia) {
+    public void borrarMembresiaPorNombre(Membresia membresia) {
+
         membresiaRepository.delete(membresia);
     }
 

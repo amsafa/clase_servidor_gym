@@ -23,11 +23,11 @@ public class SocioTest {
     void testCrearSocios(){
         Socio socios = new Socio();
         socios.setNombre("Petra");
-        socios.setDNI("12345678P");
+        socios.setDNI("12345778P");
         socios.setFecha_nacimiento(LocalDate.of(1995, 10, 10));
-        socios.setCuenta_bancaria(123056789);
-        socios.setTelefono("123456089");
-        socios.setEmail("petra@gmail.com");
+        socios.setCuenta_bancaria(123050789);
+        socios.setTelefono("123450089");
+        socios.setEmail("petra0@gmail.com");
         socios.setMembresia(null);
         socios.setFecha_registro(LocalDate.of(2021, 10, 10));
 

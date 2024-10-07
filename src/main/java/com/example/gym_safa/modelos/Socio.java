@@ -38,7 +38,7 @@ public class Socio {
     @Column(name = "correo", unique = true, nullable = false)
     private String email;
 
-    @ManyToOne
+    @ManyToOne (cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "membresia_id")
     private Membresia membresia;
 

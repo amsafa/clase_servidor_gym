@@ -21,15 +21,22 @@ public class VencimientoMembresiaTest {
     @Autowired
     private SocioService socioService;
 
-    @Test
-    void testCrearVencimientoMembresia() {
-        VencimientoMembresia vencimientoMembresia = new VencimientoMembresia();
 
-        vencimientoMembresia.setFecha_inicio(LocalDate.now());
-        vencimientoMembresia.setFecha_fin(LocalDate.now());
-        vencimientoMembresia.setEstado(Estado.VENCIDO);
 
-        VencimientoMembresia vencimientoMembresiaGuardado = vencimientoMembresiaService.saveVencimientosMembresias(vencimientoMembresia);
+@Test
+void testCrearVencimientoMembresia() {
+    VencimientoMembresia vencimientoMembresia = new VencimientoMembresia();
 
-    }
+    vencimientoMembresia.setFecha_inicio(LocalDate.now());
+    vencimientoMembresia.setFecha_fin(LocalDate.now().plusMonths(1)); // Establecer una fecha de fin válida
+    vencimientoMembresia.setEstado(Estado.VENCIDO);
+
+    // Recuperar un socio existente de la base de datos
+    Socio socio = socioService.getSociosById(1); // Asegúrate de que el ID del socio exista
+    socio = socioService.saveSocios(socio); // Merge the Socio entity to ensure it is managed
+    vencimientoMembresia.setSocio(socio);
+
+    VencimientoMembresia vencimientoMembresiaGuardado = vencimientoMembresiaService.saveVencimientosMembresias(vencimientoMembresia);
+    System.out.println(vencimientoMembresiaGuardado.toString());
+}
 }

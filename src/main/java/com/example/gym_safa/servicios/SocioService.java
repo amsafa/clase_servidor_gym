@@ -69,4 +69,6 @@ public class SocioService {
     public List<Socio> getAll() {
         return socioRepository.findAll();
     }
+
+
 }

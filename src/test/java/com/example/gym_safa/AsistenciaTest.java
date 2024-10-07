@@ -23,35 +23,35 @@ public class AsistenciaTest {
     @Test
     void testCrearAsistencia(){
         //Recuperamos un socio de la base de datos
-        Socio socio = socioService.getSociosById(1);
-
+        Socio socio = socioService.getSociosById(3);
         Asistencia asistencia = new Asistencia();
         asistencia.setSocio(socio);
-        asistencia.setFecha(LocalDate.of(2021, 10, 10));
+        asistencia.setFecha(LocalDate.of(2018, 11, 19));
         asistencia.setDias_semana(DiaSemana.LUNES);
 
-        Asistencia asistenciaGuardado = asistenciaService.saveAsistencias(asistencia);
+        Asistencia asistenciaGuardado = asistenciaService.guardarAsistencia(asistencia);
         System.out.println(asistenciaGuardado.toString());
+
     }
 
     @Test
     void testEditarAsistencia(){
-        Asistencia asistencia = asistenciaService.getAsistenciasById(1);
-        asistencia.setFecha(LocalDate.of(2021, 10, 10));
-        asistencia.setDias_semana(DiaSemana.MARTES);
+        Asistencia asistencia = asistenciaService.getAsistenciaById(3);
+        asistencia.setFecha(LocalDate.of(2021, 11, 10));
+        asistencia.setDias_semana(DiaSemana.MIERCOLES);
 
-        Asistencia asistenciaGuardado = asistenciaService.saveAsistencias(asistencia);
+        Asistencia asistenciaGuardado = asistenciaService.guardarAsistencia(asistencia);
         System.out.println(asistenciaGuardado.toString());
     }
 
     @Test
     void testEliminarAsistencia(){
-        asistenciaService.deleteAsistencias(1);
+        asistenciaService.borrarAsistenciaPorId(1);
     }
 
     @Test
     void testBuscarAsistencia(){
-        Asistencia asistencia = asistenciaService.getAsistenciasById(6);
+        Asistencia asistencia = asistenciaService.getAsistenciaById(6);
         System.out.println(asistencia.getId());
     }
 
