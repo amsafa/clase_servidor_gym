@@ -1,5 +1,6 @@
 package com.example.gym_safa.controladores;
 
+import com.example.gym_safa.dto.AsistenciaDTO;
 import com.example.gym_safa.modelos.Asistencia;
 import com.example.gym_safa.servicios.AsistenciaService;
 import lombok.AllArgsConstructor;
@@ -16,30 +17,32 @@ public class AsistenciaController {
     @Autowired
     private AsistenciaService asistenciaService;
 
-    @GetMapping()
-    public Asistencia getAsistenciaById(@RequestParam Integer id) {
-        Asistencia asistencia = asistenciaService.getAsistenciaById(id);
-        return asistencia;
+
+    @GetMapping("/all")
+    public List<AsistenciaDTO> getAllAsistencias() {
+        return asistenciaService.getAllAsistencias();
     }
 
-    @GetMapping("/id/{id}")
-    public Asistencia getAsistenciaByPath(@PathVariable Integer id) {
-        Asistencia asistencia = asistenciaService.getAsistenciaById(id);
-        return asistencia;
+    @GetMapping("/id/")
+    public AsistenciaDTO getAsistenciaById(@RequestParam Integer id) {
+        return asistenciaService.getAsistenciaById(id);
     }
 
-    @PostMapping()
-    public Asistencia guardarAsistencia(@RequestBody Asistencia asistencia) {
-        Asistencia asistenciaGuardada = asistenciaService.guardarAsistencia(asistencia);
-        return asistenciaGuardada;
 
-
+    @PostMapping("/guardar")
+    public AsistenciaDTO guardarAsistencia(@RequestBody AsistenciaDTO asistenciaDTO) {
+        return asistenciaService.guardarAsistencia(asistenciaDTO);
     }
 
-    @DeleteMapping()
-    public void borrarAsistenciaPorId(@PathVariable Integer id) {
-        asistenciaService.borrarAsistenciaPorId(id);
-    }
+
+
+
+
+
+
+
+
+
 
 
 }

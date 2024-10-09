@@ -60,15 +60,7 @@ public class SocioService {
         socioRepository.deleteById(id);
     }
 
-    /**
-     * Este método extrae todos los socios
-     * @return
-     *
-     */
 
-    public List<Socio> getAll() {
-        return socioRepository.findAll();
-    }
 
 
 }

@@ -1,5 +1,6 @@
 package com.example.gym_safa.servicios;
 
+import com.example.gym_safa.dto.MembresiaDTO;
 import com.example.gym_safa.enumerados.NombreMembresia;
 import com.example.gym_safa.modelos.Membresia;
 import com.example.gym_safa.repositorios.MembresiaRepository;
@@ -16,13 +17,11 @@ public class MembresiaService {
 
     /** Metodo que devuelve todas las membresias
      *
-     * @param nombre
+     *
      * @return
      */
-    public List<Membresia> getMembresiaByNombre(NombreMembresia nombre) {
-
-        List<Membresia> membresias = membresiaRepository.findAll();
-        return membresias;
+    public List<Membresia> getAllMembresias() {
+        return membresiaRepository.findAll();
     }
 
     /**
@@ -32,20 +31,33 @@ public class MembresiaService {
      * @return
      */
     public Membresia getMembresiasById(Integer id) {
+
         return membresiaRepository.findById(id).orElse(null);
     }
 
 
 
-    /**
-     * Guarda una membresia nueva o modifica
-     *
-     * @param membresia
-     * @return
-     */
-    public Membresia guardarMembresia(Membresia membresia) {
-        return membresiaRepository.save(membresia);
-    }
+/**
+ * Modifica membresia
+ *
+ * @param membresiaDTO
+ * @return
+ */
+public MembresiaDTO modificarMembresia(MembresiaDTO membresiaDTO) {
+    Membresia membresia = membresiaRepository.findById(membresiaDTO.getId()).orElse(null);
+
+    membresia.setDuracionMeses(membresiaDTO.getDuracionMeses());
+    membresia.setPrecio(membresiaDTO.getPrecio());
+
+    Membresia savedMembresia = membresiaRepository.save(membresia);
+
+    MembresiaDTO savedMembresiaDTO = new MembresiaDTO();
+    savedMembresiaDTO.setId(savedMembresia.getId());
+    savedMembresiaDTO.setDuracionMeses(savedMembresia.getDuracionMeses());
+    savedMembresiaDTO.setPrecio(savedMembresia.getPrecio());
+
+    return savedMembresiaDTO;
+}
 
     /**
      * Elimina una membresia por su id
@@ -58,16 +70,7 @@ public class MembresiaService {
 
     }
 
-    /**
-     * Elimina todas las membresias
-     *
-     * @param membresia
-     * @return
-     */
-    public void borrarMembresiaPorNombre(Membresia membresia) {
 
-        membresiaRepository.delete(membresia);
-    }
 
 
 

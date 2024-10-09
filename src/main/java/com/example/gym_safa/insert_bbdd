@@ -1,0 +1,143 @@
+
+
+DROP TABLE IF EXISTS Usuarios_Admin;
+DROP TABLE IF EXISTS Pagos;
+DROP TABLE IF EXISTS Vencimientos_Membresias;
+DROP TABLE IF EXISTS Asistencias;
+DROP TABLE IF EXISTS Socios;
+DROP TABLE IF EXISTS Membresias;
+
+
+CREATE TABLE Membresias (
+    membresia_id SERIAL PRIMARY KEY,
+    nombre INT,
+    duracion_meses INT NOT NULL,
+    precio float NOT NULL
+
+
+);
+ALTER TABLE Membresias
+    ALTER COLUMN nombre TYPE VARCHAR(255);
+
+
+CREATE TABLE Socios (
+    socio_id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    DNI VARCHAR (100) unique,
+    fecha_nacimiento date not null,
+    cuenta_bancaria int unique,
+    telefono VARCHAR(15),
+    correo VARCHAR(100) UNIQUE,
+    membresia_id INT,
+    fecha_registro DATE NOT NULL,
+    CONSTRAINT fk_membresia FOREIGN KEY (membresia_id) REFERENCES Membresias(membresia_id)
+    ON DELETE SET NULL
+);
+
+
+CREATE TABLE Asistencias (
+    asistencia_id SERIAL PRIMARY KEY,
+    socio_id INT NOT NULL,
+    fecha_asistencia DATE NOT NULL,
+    dias_por_semana  INT ,
+    CONSTRAINT fk_socio_asistencia FOREIGN KEY (socio_id) REFERENCES Socios(socio_id)
+    ON DELETE CASCADE
+);
+
+
+CREATE TABLE Vencimientos_Membresias (
+    vencimiento_id SERIAL PRIMARY KEY,
+    socio_id INT NOT NULL,
+    fecha_i DATE NOT NULL,
+    fecha_f DATE NOT NULL,
+    estado INT,
+    CONSTRAINT fk_socio_vencimiento FOREIGN KEY (socio_id) REFERENCES Socios(socio_id)
+    ON DELETE CASCADE
+);
+
+
+CREATE TABLE Pagos (
+    pago_id SERIAL PRIMARY KEY,
+    socio_id INT NOT NULL,
+    monto float NOT NULL,
+    fecha_pago DATE NOT NULL,
+    tipo_pago INT,
+    CONSTRAINT fk_socio_pago FOREIGN KEY (socio_id) REFERENCES Socios(socio_id)
+    ON DELETE CASCADE
+);
+
+
+CREATE TABLE Usuarios_Admin (
+    admin_id SERIAL PRIMARY KEY,
+    usuario VARCHAR(50) UNIQUE NOT NULL,
+    clave VARCHAR(255) NOT NULL,
+    rol INT
+);
+
+select * from socios s ;
+select * from membresias m ;
+select * from usuarios_admin ua ;
+select * from pagos p ;
+select * from vencimientos_membresias vm ;
+select * from asistencias a ;
+select * from socios s ;
+
+
+
+-- Inserción 1 para la membresía BASIC
+INSERT INTO Membresias (nombre, duracion_meses, precio)
+VALUES ('BASIC', 6, 500.00);
+
+-- Inserción 2 para la membresía INTERMEDIO
+INSERT INTO Membresias (nombre, duracion_meses, precio)
+VALUES ('INTERMEDIO', 12, 1000.00);
+
+-- Inserción 3 para la membresía INVENCIBLE
+INSERT INTO Membresias (nombre, duracion_meses, precio)
+VALUES ('INVENCIBLE', 24, 2000.00);
+
+-- Inserción 1
+INSERT INTO Socios (nombre, DNI, fecha_nacimiento, cuenta_bancaria, telefono, correo, membresia_id, fecha_registro)
+VALUES ('Juan Pérez', '12345678X', '1990-05-15', 987654321, '5551234567', 'juan.perez@mail.com', 1, '2024-10-01');
+
+-- Inserción 2
+INSERT INTO Socios (nombre, DNI, fecha_nacimiento, cuenta_bancaria, telefono, correo, membresia_id, fecha_registro)
+VALUES ('Ana Gómez', '87654321X', '1985-11-25', 123456789, '5559876543', 'ana.gomez@mail.com', 2, '2024-10-05');
+
+-- Inserción 1
+INSERT INTO Asistencias (socio_id, fecha_asistencia, dias_por_semana)
+VALUES (1, '2024-10-06', 3);
+
+-- Inserción 2
+INSERT INTO Asistencias (socio_id, fecha_asistencia, dias_por_semana)
+VALUES (2, '2024-10-07', 2);
+
+-- Inserción 1
+INSERT INTO Vencimientos_Membresias (socio_id, fecha_i, fecha_f, estado)
+VALUES (1, '2024-10-01', '2025-10-01', 1);
+
+-- Inserción 2
+INSERT INTO Vencimientos_Membresias (socio_id, fecha_i, fecha_f, estado)
+VALUES (2, '2024-10-05', '2025-04-05', 1);
+
+-- Inserción 1
+INSERT INTO Pagos (socio_id, monto, fecha_pago, tipo_pago)
+VALUES (1, 1500.00, '2024-10-01', 1);
+
+-- Inserción 2
+INSERT INTO Pagos (socio_id, monto, fecha_pago, tipo_pago)
+VALUES (2, 800.00, '2024-10-05', 2);
+
+-- Inserción 1
+INSERT INTO Usuarios_Admin (usuario, clave, rol)
+VALUES ('admin1', '12345', 1);
+
+-- Inserción 2
+INSERT INTO Usuarios_Admin (usuario, clave, rol)
+VALUES ('admin2', '67890', 2);
+
+
+
+
+
+

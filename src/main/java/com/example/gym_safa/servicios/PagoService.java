@@ -5,16 +5,11 @@ import com.example.gym_safa.repositorios.PagoRepository;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 
-
-
 @Service
 @AllArgsConstructor
-
 public class PagoService {
 
-    private PagoRepository pagoRepository;
-
-
+    private final PagoRepository pagoRepository;
 
     /**
      * Busca un pago por su id
@@ -24,6 +19,15 @@ public class PagoService {
      */
     public Pago getPagosById(Integer id) {
         return pagoRepository.findById(id).orElse(null);
+    }
+
+    /**
+     * Devuelve todos los pagos
+     *
+     * @return
+     */
+    public Iterable<Pago> getAllPagos() {
+        return pagoRepository.findAll();
     }
 
     /**
@@ -44,6 +48,4 @@ public class PagoService {
     public void deletePagos(Integer id) {
         pagoRepository.deleteById(id);
     }
-
-
 }

@@ -2,7 +2,7 @@ package com.example.gym_safa.modelos;
 
 import jakarta.persistence.*;
 import lombok.*;
-import  com.example.gym_safa.enumerados.*;
+import com.example.gym_safa.enumerados.NombreMembresia;
 
 @Entity
 @Table(name = "membresias", schema = "gym_db", catalog = "postgres")
@@ -16,22 +16,16 @@ public class Membresia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "membresia_id" )
+    @Column(name = "membresia_id")
     private Integer id;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "nombre", nullable = false)
     private NombreMembresia nombre;
 
     @Column(name = "duracion_meses", nullable = false)
-    private Integer duracion_meses;
+    private Integer duracionMeses;
 
     @Column(name = "precio", nullable = false)
-    private Double precio ;
-
-
-
-
-
-
+    private Double precio;
 }
