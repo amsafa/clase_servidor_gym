@@ -39,12 +39,10 @@ CREATE TABLE Asistencias (
     asistencia_id SERIAL PRIMARY KEY,
     socio_id INT NOT NULL,
     fecha_asistencia DATE NOT NULL,
-    dias_por_semana  INT ,
     CONSTRAINT fk_socio_asistencia FOREIGN KEY (socio_id) REFERENCES Socios(socio_id)
     ON DELETE CASCADE
 );
-ALTER TABLE asistencias
-DROP COLUMN dias_por_semana;
+
 
 
 
@@ -70,12 +68,17 @@ CREATE TABLE Pagos (
 );
 
 
-CREATE TABLE Usuarios_Admin (
+CREATE TABLE Usuarios (
     admin_id SERIAL PRIMARY KEY,
-    usuario VARCHAR(50) UNIQUE NOT NULL,
+    socio_id INT not null,
     clave VARCHAR(255) NOT NULL,
     rol INT
+    CONSTRAINT fk_socio_usuarios FOREIGN KEY (socio_id) REFERENCES Socios(socio_id)
+    ON DELETE CASCADE
+
 );
+
+
 
 select * from socios s ;
 select * from membresias m ;
@@ -106,10 +109,10 @@ INSERT INTO Socios (nombre, DNI, fecha_nacimiento, cuenta_bancaria, telefono, co
 VALUES ('Ana Gómez', '87654321X', '1985-11-25', 123456789, '5559876543', 'ana.gomez@mail.com', 2, '2024-10-05');
 
 -- Inserciones para la tabla Asistencias
-INSERT INTO Asistencias (socio_id, fecha_asistencia, dias_por_semana)
+INSERT INTO Asistencias (socio_id, fecha_asistencia)
 VALUES (1, '2024-10-06', 3);
 
-INSERT INTO Asistencias (socio_id, fecha_asistencia, dias_por_semana)
+INSERT INTO Asistencias (socio_id, fecha_asistencia)
 VALUES (2, '2024-10-07', 2);
 
 -- Inserciones para la tabla Vencimientos_Membresias
@@ -127,10 +130,10 @@ INSERT INTO Pagos (socio_id, monto, fecha_pago, tipo_pago)
 VALUES (2, 800.00, '2024-10-05', 2);
 
 -- Inserciones para la tabla Usuarios_Admin
-INSERT INTO Usuarios_Admin (usuario, clave, rol)
+INSERT INTO Usuarios_Admin (clave, rol)
 VALUES ('admin1', '12345', 1);
 
-INSERT INTO Usuarios_Admin (usuario, clave, rol)
+INSERT INTO Usuarios_Admin (clave, rol)
 VALUES ('admin2', '67890', 2);
 
 
