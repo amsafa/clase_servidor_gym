@@ -1,15 +1,22 @@
 package com.example.gym_safa.servicios;
 
+import com.example.gym_safa.dto.PagoDTO;
 import com.example.gym_safa.modelos.Pago;
 import com.example.gym_safa.repositorios.PagoRepository;
+import com.example.gym_safa.repositorios.SocioRepository;
 import org.springframework.stereotype.Service;
+import com.example.gym_safa.enumerados.TipoPago;
 import lombok.AllArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class PagoService {
 
-    private final PagoRepository pagoRepository;
+    private PagoRepository pagoRepository;
+    private SocioRepository socioRepository;
 
     /**
      * Busca un pago por su id
@@ -17,8 +24,15 @@ public class PagoService {
      * @param id
      * @return
      */
-    public Pago getPagosById(Integer id) {
-        return pagoRepository.findById(id).orElse(null);
+    public PagoDTO getPagosById(Integer id) {
+        Pago pago = pagoRepository.findById(id).get();
+        PagoDTO dto = new PagoDTO();
+        dto.setId(pago.getId());
+        dto.setFecha(pago.getFecha());
+        dto.setMonto(pago.getMonto());
+        dto.setSocioId(pago.getSocio().getId());
+        dto.setTipoPago(pago.getTipo_pago().ordinal());
+        return dto;
     }
 
     /**
@@ -26,18 +40,38 @@ public class PagoService {
      *
      * @return
      */
-    public Iterable<Pago> getAllPagos() {
-        return pagoRepository.findAll();
+    public List<PagoDTO> getAllPagos() {
+        List<PagoDTO> pagoDTOS = new ArrayList<>();
+        List<Pago> pagos = pagoRepository.findAll();
+        for (Pago pago : pagos) {
+            PagoDTO dto = new PagoDTO();
+            dto.setId(pago.getId());
+            dto.setFecha(pago.getFecha());
+            dto.setMonto(pago.getMonto());
+            dto.setSocioId(pago.getSocio().getId());
+            dto.setTipoPago(pago.getTipo_pago().ordinal());
+            pagoDTOS.add(dto);
+        }
+        return pagoDTOS;
     }
+
 
     /**
      * Guarda un pago nuevo o modifica
      *
-     * @param pago
+     * @param pagoDTO
      * @return
      */
-    public Pago savePagos(Pago pago) {
-        return pagoRepository.save(pago);
+
+    public PagoDTO guardarPago(PagoDTO pagoDTO) {
+        Pago pago = new Pago();
+        pago.setId(pagoDTO.getId());
+        pago.setFecha(pagoDTO.getFecha());
+        pago.setMonto(pagoDTO.getMonto());
+        pago.setSocio(socioRepository.findById(pagoDTO.getSocioId()).get());
+        pago.setTipo_pago(TipoPago.values()[pagoDTO.getTipoPago()]);
+        pagoRepository.save(pago);
+        return pagoDTO;
     }
 
     /**
@@ -45,7 +79,9 @@ public class PagoService {
      *
      * @param id
      */
-    public void deletePagos(Integer id) {
+    public void eliminarPago(Integer id) {
         pagoRepository.deleteById(id);
+
     }
 }
+

@@ -1,6 +1,7 @@
 package com.example.gym_safa.controladores;
 
 
+import com.example.gym_safa.dto.SocioDTO;
 import com.example.gym_safa.modelos.Socio;
 import com.example.gym_safa.servicios.SocioService;
 import lombok.AllArgsConstructor;
@@ -18,30 +19,27 @@ public class SocioController {
     private SocioService socioService;
 
     @GetMapping("/listar")
-    public List<Socio> getAllSocios() {
-        List<Socio> socios = socioService.getAllSocios();
-        return socios;
+    public List<SocioDTO> getAllSocios() {
+        return socioService.getAllSocios();
     }
 
     // Esta es una forma de hacer extraer el id de la url
 
-    @GetMapping("/id/")
-    public Socio getSociosById(@RequestParam Integer id) {
-        Socio socio = socioService.getSociosById(id);
-        return socio;
-    }
+   @GetMapping("/id/")
+    public SocioDTO getSociosById(@RequestParam Integer id) {
+        return socioService.getSociosById(id);
+}
 
     // Esta es otra forma de hacer extraer el id de la url
-    @GetMapping("/id/{id}")
-    public Socio getSociosByPath(@PathVariable Integer id) {
-        Socio socio = socioService.getSociosById(id);
-        return socio;
-    }
+//    @GetMapping("/id/{id}")
+//    public Socio getSociosByPath(@PathVariable Integer id) {
+//        Socio socio = socioService.getSociosById(id);
+//        return socio;
+//    }
 
-    @PostMapping
-    public Socio saveSocios( @RequestBody Socio socios) {
-        Socio socio = socioService.saveSocios(socios);
-        return socio;
+    @PostMapping("/guardar")
+    public SocioDTO guardarModificarSocio(@RequestBody SocioDTO socioDTO) {
+        return socioService.guardarModificarSocio(socioDTO);
     }
 
     @DeleteMapping

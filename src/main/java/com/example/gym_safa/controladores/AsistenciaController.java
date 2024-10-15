@@ -34,6 +34,14 @@ public class AsistenciaController {
         return asistenciaService.guardarAsistencia(asistenciaDTO);
     }
 
+    @DeleteMapping("/eliminar")
+    public void eliminarAsistencia(@RequestParam Integer id) {
+        asistenciaService.eliminarAsistencia(id);
+
+}
+
+
+
 
 
 
