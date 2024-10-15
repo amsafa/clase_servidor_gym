@@ -43,6 +43,9 @@ CREATE TABLE Asistencias (
     CONSTRAINT fk_socio_asistencia FOREIGN KEY (socio_id) REFERENCES Socios(socio_id)
     ON DELETE CASCADE
 );
+ALTER TABLE asistencias
+DROP COLUMN dias_por_semana;
+
 
 
 CREATE TABLE Vencimientos_Membresias (
@@ -79,64 +82,56 @@ select * from membresias m ;
 select * from usuarios_admin ua ;
 select * from pagos p ;
 select * from vencimientos_membresias vm ;
-select * from asistencias a ;
+select * from gym_db.asistencias ;
 select * from socios s ;
 
 
 
--- Inserción 1 para la membresía BASIC
-INSERT INTO Membresias (nombre, duracion_meses, precio)
-VALUES ('BASIC', 6, 500.00);
 
--- Inserción 2 para la membresía INTERMEDIO
+-- Inserciones para la tabla Membresias
 INSERT INTO Membresias (nombre, duracion_meses, precio)
-VALUES ('INTERMEDIO', 12, 1000.00);
+VALUES ('BASICO', 3, 250);
 
--- Inserción 3 para la membresía INVENCIBLE
 INSERT INTO Membresias (nombre, duracion_meses, precio)
-VALUES ('INVENCIBLE', 24, 2000.00);
+VALUES ('INTERMEDIO', 6, 450);
 
--- Inserción 1
+INSERT INTO Membresias (nombre, duracion_meses, precio)
+VALUES ('INVENCIBLE', 12, 850);
+
+-- Inserciones para la tabla Socios
 INSERT INTO Socios (nombre, DNI, fecha_nacimiento, cuenta_bancaria, telefono, correo, membresia_id, fecha_registro)
 VALUES ('Juan Pérez', '12345678X', '1990-05-15', 987654321, '5551234567', 'juan.perez@mail.com', 1, '2024-10-01');
 
--- Inserción 2
 INSERT INTO Socios (nombre, DNI, fecha_nacimiento, cuenta_bancaria, telefono, correo, membresia_id, fecha_registro)
 VALUES ('Ana Gómez', '87654321X', '1985-11-25', 123456789, '5559876543', 'ana.gomez@mail.com', 2, '2024-10-05');
 
--- Inserción 1
+-- Inserciones para la tabla Asistencias
 INSERT INTO Asistencias (socio_id, fecha_asistencia, dias_por_semana)
 VALUES (1, '2024-10-06', 3);
 
--- Inserción 2
 INSERT INTO Asistencias (socio_id, fecha_asistencia, dias_por_semana)
 VALUES (2, '2024-10-07', 2);
 
--- Inserción 1
+-- Inserciones para la tabla Vencimientos_Membresias
 INSERT INTO Vencimientos_Membresias (socio_id, fecha_i, fecha_f, estado)
 VALUES (1, '2024-10-01', '2025-10-01', 1);
 
--- Inserción 2
 INSERT INTO Vencimientos_Membresias (socio_id, fecha_i, fecha_f, estado)
 VALUES (2, '2024-10-05', '2025-04-05', 1);
 
--- Inserción 1
+-- Inserciones para la tabla Pagos
 INSERT INTO Pagos (socio_id, monto, fecha_pago, tipo_pago)
 VALUES (1, 1500.00, '2024-10-01', 1);
 
--- Inserción 2
 INSERT INTO Pagos (socio_id, monto, fecha_pago, tipo_pago)
 VALUES (2, 800.00, '2024-10-05', 2);
 
--- Inserción 1
+-- Inserciones para la tabla Usuarios_Admin
 INSERT INTO Usuarios_Admin (usuario, clave, rol)
 VALUES ('admin1', '12345', 1);
 
--- Inserción 2
 INSERT INTO Usuarios_Admin (usuario, clave, rol)
 VALUES ('admin2', '67890', 2);
-
-
 
 
 
