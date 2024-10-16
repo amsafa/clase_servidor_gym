@@ -1,13 +1,12 @@
 package com.example.gym_safa.modelos;
 
 import com.example.gym_safa.enumerados.Estado;
-import com.example.gym_safa.enumerados.TipoPago;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
 
-@Table(name = "vencimientos_membresia", schema = "gym_db", catalog = "postgres")
+@Table(name = "vencimiento", schema = "gym_db", catalog = "postgres")
 @Getter
 @Setter
 @ToString
@@ -16,7 +15,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 @Entity
 
-public class VencimientoMembresia {
+public class Vencimiento {
 
     @Id
     @Column(name = "vencimiento_id")

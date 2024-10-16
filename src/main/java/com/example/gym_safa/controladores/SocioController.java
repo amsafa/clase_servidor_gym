@@ -1,6 +1,7 @@
 package com.example.gym_safa.controladores;
 
 
+import com.example.gym_safa.dto.AsistenciaResumenDTO;
 import com.example.gym_safa.dto.SocioDTO;
 import com.example.gym_safa.modelos.Socio;
 import com.example.gym_safa.servicios.SocioService;
@@ -46,6 +47,15 @@ public class SocioController {
     public void deleteSocios(@RequestParam Integer id) {
         socioService.deleteSocios(id);
     }
+
+    @GetMapping("/asistencia")
+    public AsistenciaResumenDTO getAsistenciaResumenBySocioId(@RequestParam Integer id_socio) {
+        return socioService.getAsistenciaResumenBySocioId(id_socio);
+    }
+
+
+
+
 
 
 }

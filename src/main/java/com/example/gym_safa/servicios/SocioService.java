@@ -1,8 +1,11 @@
 package com.example.gym_safa.servicios;
 
+import com.example.gym_safa.dto.AsistenciaResumenDTO;
 import com.example.gym_safa.dto.SocioDTO;
+import com.example.gym_safa.modelos.Asistencia;
 import com.example.gym_safa.modelos.Membresia;
 import com.example.gym_safa.modelos.Socio;
+import com.example.gym_safa.repositorios.AsistenciaRepository;
 import com.example.gym_safa.repositorios.SocioRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,12 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import java.time.Duration;
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class SocioService {
 
     private SocioRepository socioRepository;
     private MembresiaService membresiaService;
+    private AsistenciaRepository asistenciaRepository;
 
     /**
      * Este método devuelve todos los socios
@@ -100,7 +107,35 @@ public class SocioService {
         socioRepository.deleteById(id);
     }
 
+    /**
+     * Este método devuelve toda la asistencia del socio
+     *
+     * @return
+     */
+public AsistenciaResumenDTO getAsistenciaResumenBySocioId(Integer socio) {
+    List<Asistencia> asistencias = asistenciaRepository.findAll();
+    int totalDias = asistencias.size();
+    long totalHoras = asistencias.stream()
+            .mapToLong(a -> Duration.between(a.getFechaEntrada(), a.getFechaSalida()).toHours())
+            .sum();
+    Socio socioEntity = socioRepository.findById(socio).orElse(null);
+    return new AsistenciaResumenDTO(socioEntity, totalDias, totalHoras);
+}
+
+
+
+
+
+
+
 
 
 
 }
+
+
+
+
+
+
+

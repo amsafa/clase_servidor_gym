@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Data
@@ -11,7 +12,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class AsistenciaDTO {
 
-    private LocalDate fecha;
-    private Integer socioId;
+   private Integer id;
+   private Integer socioId;
+   private LocalDateTime fechaEntrada;
+   private LocalDateTime fechaSalida;
 
 }

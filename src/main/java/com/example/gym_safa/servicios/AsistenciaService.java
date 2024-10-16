@@ -34,7 +34,8 @@ public class AsistenciaService {
         List<Asistencia> asistencias = asistenciaRepository.findAll();
         for (Asistencia asistencia : asistencias) {
             AsistenciaDTO dto = new AsistenciaDTO();
-            dto.setFecha(asistencia.getFecha());
+            dto.setFechaEntrada(asistencia.getFechaEntrada());
+            dto.setFechaSalida(asistencia.getFechaSalida());
             dto.setSocioId(asistencia.getSocio().getId());
             asistenciaDTOS.add(dto);
         }
@@ -50,7 +51,8 @@ public class AsistenciaService {
     public AsistenciaDTO  getAsistenciaById(Integer id) {
         Asistencia asistencia = asistenciaRepository.findById(id).get();
         AsistenciaDTO dto = new AsistenciaDTO();
-        dto.setFecha(asistencia.getFecha());
+        dto.setFechaEntrada(asistencia.getFechaEntrada());
+        dto.setFechaSalida(asistencia.getFechaSalida());
         dto.setSocioId(asistencia.getSocio().getId());
         return dto;
 
@@ -63,7 +65,8 @@ public class AsistenciaService {
      */
 public AsistenciaDTO guardarAsistencia(AsistenciaDTO asistenciaDTO) {
     Asistencia asistencia = new Asistencia();
-    asistencia.setFecha(asistenciaDTO.getFecha());
+    asistencia.setFechaEntrada(asistenciaDTO.getFechaSalida());
+    asistencia.setFechaSalida(asistenciaDTO.getFechaSalida());
     asistencia.setSocio(socioRepository.findById(asistenciaDTO.getSocioId()).orElse(null));
     asistenciaRepository.save(asistencia);
     return asistenciaDTO;

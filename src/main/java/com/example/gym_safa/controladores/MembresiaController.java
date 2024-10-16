@@ -21,7 +21,7 @@ public class MembresiaController {
     @Autowired
     private MembresiaService membresiaService;
 
-    @GetMapping("/listar")
+    @GetMapping("/bonos")
     public List<Membresia> getAllMembresias() {
         List<Membresia> membresias = membresiaService.getAllMembresias();
         return membresias;

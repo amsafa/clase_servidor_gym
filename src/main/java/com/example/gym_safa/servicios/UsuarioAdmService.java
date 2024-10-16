@@ -4,7 +4,7 @@ package com.example.gym_safa.servicios;
 import com.example.gym_safa.repositorios.UsuarioAdminRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.example.gym_safa.modelos.UsuarioAdmin;
+import com.example.gym_safa.modelos.Usuario;
 
 @Service
 @AllArgsConstructor
@@ -17,7 +17,7 @@ public class UsuarioAdmService {
      * @param id
      * @return
      */
-    public UsuarioAdmin getUsuariosAdminById(Integer id) {
+    public Usuario getUsuariosAdminById(Integer id) {
         return usuarioAdminRepository.findById(id).orElse(null);
     }
 
@@ -27,7 +27,7 @@ public class UsuarioAdmService {
      * @param usuario_admin
      * @return
      */
-    public UsuarioAdmin saveUsuariosAdmin(UsuarioAdmin usuario_admin) {
+    public Usuario saveUsuariosAdmin(Usuario usuario_admin) {
         return usuarioAdminRepository.save(usuario_admin);
     }
 
@@ -38,5 +38,9 @@ public class UsuarioAdmService {
     public void deleteUsuariosAdmin(Integer id) {
         usuarioAdminRepository.deleteById(id);
     }
+
+
+
+
 
 }

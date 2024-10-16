@@ -1,141 +1,125 @@
+-- Elimina las tablas si ya existen
+DROP TABLE IF EXISTS usuario;
+DROP TABLE IF EXISTS pago;
+DROP TABLE IF EXISTS vencimiento;
+DROP TABLE IF EXISTS asistencia;
+DROP TABLE IF EXISTS socio;
+DROP TABLE IF EXISTS membresia;
 
-
-DROP TABLE IF EXISTS Usuarios_Admin;
-DROP TABLE IF EXISTS Pagos;
-DROP TABLE IF EXISTS Vencimientos_Membresias;
-DROP TABLE IF EXISTS Asistencias;
-DROP TABLE IF EXISTS Socios;
-DROP TABLE IF EXISTS Membresias;
-
-
-CREATE TABLE Membresias (
+-- Crear tabla membresía
+CREATE TABLE membresia (
     membresia_id SERIAL PRIMARY KEY,
-    nombre INT,
+    nombre VARCHAR(255) NOT NULL,
     duracion_meses INT NOT NULL,
-    precio float NOT NULL
-
-
+    precio FLOAT NOT NULL
 );
-ALTER TABLE Membresias
-    ALTER COLUMN nombre TYPE VARCHAR(255);
 
-
-CREATE TABLE Socios (
+-- Crear tabla socio
+CREATE TABLE socio (
     socio_id SERIAL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
-    DNI VARCHAR (100) unique,
-    fecha_nacimiento date not null,
-    cuenta_bancaria int unique,
+    DNI VARCHAR(100) UNIQUE,
+    fecha_nacimiento DATE NOT NULL,
+    cuenta_bancaria INT UNIQUE,
     telefono VARCHAR(15),
     correo VARCHAR(100) UNIQUE,
     membresia_id INT,
     fecha_registro DATE NOT NULL,
-    CONSTRAINT fk_membresia FOREIGN KEY (membresia_id) REFERENCES Membresias(membresia_id)
+    CONSTRAINT fk_membresia FOREIGN KEY (membresia_id) REFERENCES membresia(membresia_id)
     ON DELETE SET NULL
 );
 
-
-CREATE TABLE Asistencias (
+-- Crear tabla asistencia
+CREATE TABLE asistencia (
     asistencia_id SERIAL PRIMARY KEY,
     socio_id INT NOT NULL,
-    fecha_asistencia DATE NOT NULL,
-    CONSTRAINT fk_socio_asistencia FOREIGN KEY (socio_id) REFERENCES Socios(socio_id)
+    fecha_entrada TIMESTAMP NOT NULL,
+    fecha_salida TIMESTAMP NOT NULL,
+    CONSTRAINT fk_socio_asistencia FOREIGN KEY (socio_id) REFERENCES socio(socio_id)
     ON DELETE CASCADE
 );
 
-
-
-
-CREATE TABLE Vencimientos_Membresias (
+-- Crear tabla vencimiento
+CREATE TABLE vencimiento (
     vencimiento_id SERIAL PRIMARY KEY,
     socio_id INT NOT NULL,
     fecha_i DATE NOT NULL,
     fecha_f DATE NOT NULL,
     estado INT,
-    CONSTRAINT fk_socio_vencimiento FOREIGN KEY (socio_id) REFERENCES Socios(socio_id)
+    CONSTRAINT fk_socio_vencimiento FOREIGN KEY (socio_id) REFERENCES socio(socio_id)
     ON DELETE CASCADE
 );
 
-
-CREATE TABLE Pagos (
+-- Crear tabla pago
+CREATE TABLE pago (
     pago_id SERIAL PRIMARY KEY,
     socio_id INT NOT NULL,
-    monto float NOT NULL,
+    monto FLOAT NOT NULL,
     fecha_pago DATE NOT NULL,
     tipo_pago INT,
-    CONSTRAINT fk_socio_pago FOREIGN KEY (socio_id) REFERENCES Socios(socio_id)
+    CONSTRAINT fk_socio_pago FOREIGN KEY (socio_id) REFERENCES socio(socio_id)
     ON DELETE CASCADE
 );
 
-
-CREATE TABLE Usuarios (
+-- Crear tabla usuario
+CREATE TABLE usuario (
     admin_id SERIAL PRIMARY KEY,
-    socio_id INT not null,
+    socio_id INT NOT NULL,
     clave VARCHAR(255) NOT NULL,
-    rol INT
-    CONSTRAINT fk_socio_usuarios FOREIGN KEY (socio_id) REFERENCES Socios(socio_id)
+    rol INT,
+    CONSTRAINT fk_socio_usuarios FOREIGN KEY (socio_id) REFERENCES socio(socio_id)
     ON DELETE CASCADE
-
 );
 
 
 
-select * from socios s ;
-select * from membresias m ;
-select * from usuarios_admin ua ;
-select * from pagos p ;
-select * from vencimientos_membresias vm ;
-select * from gym_db.asistencias ;
-select * from socios s ;
+
+select * from pago p ;
+select * from usuario u ;
+select * from vencimiento v ;
+select * from asistencia a ;
+select * from membresia m ;
+select * from socio s ;
 
 
+-- Insertar datos en la tabla membresía
+INSERT INTO membresia (nombre, duracion_meses, precio)
+VALUES
+('Basico', 3, 35.00),
+('Intermedio', 6, 65.00),
+('Invencible', 12, 120.50);
 
+-- Insertar datos en la tabla socio
+INSERT INTO socio (nombre, DNI, fecha_nacimiento, cuenta_bancaria, telefono, correo, membresia_id, fecha_registro)
+VALUES
+('Juan Pérez', '12345678', '1990-05-10', 123456789, '555-1234', 'juan.perez@email.com', 1, '2023-01-15'),
+('María López', '87654321', '1985-10-22', 987654321, '555-5678', 'maria.lopez@email.com', 2, '2023-03-10'),
+('Carlos Gómez', '45678912', '1995-07-14', 112233445, '555-7890', 'carlos.gomez@email.com', 3, '2023-04-20');
 
--- Inserciones para la tabla Membresias
-INSERT INTO Membresias (nombre, duracion_meses, precio)
-VALUES ('BASICO', 3, 250);
+-- Insertar datos en la tabla asistencia
+INSERT INTO asistencia (socio_id, fecha_entrada, fecha_salida) VALUES (1, '2023-10-01 08:00:00', '2023-10-01 10:00:00');
+INSERT INTO asistencia (socio_id, fecha_entrada, fecha_salida) VALUES (1, '2023-10-02 09:00:00', '2023-10-02 11:30:00');
+INSERT INTO asistencia (socio_id, fecha_entrada, fecha_salida) VALUES (2, '2023-10-01 07:30:00', '2023-10-01 09:00:00');
 
-INSERT INTO Membresias (nombre, duracion_meses, precio)
-VALUES ('INTERMEDIO', 6, 450);
+-- Insertar datos en la tabla vencimiento
+INSERT INTO vencimiento (socio_id, fecha_i, fecha_f, estado)
+VALUES
+(1, '2023-01-15', '2024-01-15', 1),
+(2, '2023-03-10', '2023-09-10', 1),
+(3, '2023-04-20', '2023-07-20', 0);
 
-INSERT INTO Membresias (nombre, duracion_meses, precio)
-VALUES ('INVENCIBLE', 12, 850);
+-- Insertar datos en la tabla pago
+INSERT INTO pago (socio_id, monto, fecha_pago, tipo_pago)
+VALUES
+(1, 120.50, '2023-01-15', 1),
+(2, 65.00, '2023-03-10', 2),
+(3, 35.00, '2023-04-20', 1);
 
--- Inserciones para la tabla Socios
-INSERT INTO Socios (nombre, DNI, fecha_nacimiento, cuenta_bancaria, telefono, correo, membresia_id, fecha_registro)
-VALUES ('Juan Pérez', '12345678X', '1990-05-15', 987654321, '5551234567', 'juan.perez@mail.com', 1, '2024-10-01');
-
-INSERT INTO Socios (nombre, DNI, fecha_nacimiento, cuenta_bancaria, telefono, correo, membresia_id, fecha_registro)
-VALUES ('Ana Gómez', '87654321X', '1985-11-25', 123456789, '5559876543', 'ana.gomez@mail.com', 2, '2024-10-05');
-
--- Inserciones para la tabla Asistencias
-INSERT INTO Asistencias (socio_id, fecha_asistencia)
-VALUES (1, '2024-10-06', 3);
-
-INSERT INTO Asistencias (socio_id, fecha_asistencia)
-VALUES (2, '2024-10-07', 2);
-
--- Inserciones para la tabla Vencimientos_Membresias
-INSERT INTO Vencimientos_Membresias (socio_id, fecha_i, fecha_f, estado)
-VALUES (1, '2024-10-01', '2025-10-01', 1);
-
-INSERT INTO Vencimientos_Membresias (socio_id, fecha_i, fecha_f, estado)
-VALUES (2, '2024-10-05', '2025-04-05', 1);
-
--- Inserciones para la tabla Pagos
-INSERT INTO Pagos (socio_id, monto, fecha_pago, tipo_pago)
-VALUES (1, 1500.00, '2024-10-01', 1);
-
-INSERT INTO Pagos (socio_id, monto, fecha_pago, tipo_pago)
-VALUES (2, 800.00, '2024-10-05', 2);
-
--- Inserciones para la tabla Usuarios_Admin
-INSERT INTO Usuarios_Admin (clave, rol)
-VALUES ('admin1', '12345', 1);
-
-INSERT INTO Usuarios_Admin (clave, rol)
-VALUES ('admin2', '67890', 2);
-
-
+-- Insertar datos en la tabla usuario
+INSERT INTO usuario (socio_id, clave, rol)
+VALUES
+(1, 'adminpass123', 1),
+(2, 'sociopass456', 2),
+(3, 'sociopass789', 2);
 
 
