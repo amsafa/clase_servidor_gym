@@ -3,7 +3,6 @@ package com.example.gym_safa.servicios;
 import com.example.gym_safa.dto.AsistenciaResumenDTO;
 import com.example.gym_safa.dto.SocioDTO;
 import com.example.gym_safa.modelos.Asistencia;
-import com.example.gym_safa.modelos.Membresia;
 import com.example.gym_safa.modelos.Socio;
 import com.example.gym_safa.repositorios.AsistenciaRepository;
 import com.example.gym_safa.repositorios.SocioRepository;
@@ -12,10 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import java.time.Duration;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -120,6 +117,22 @@ public class SocioService {
                 .sum();
         return new AsistenciaResumenDTO(socioId, totalDias, totalHoras);
     }
+
+
+    /**
+     * Este método devuelve el gasto total de un socio
+     *
+     *  @return
+     */
+
+
+
+
+
+
+
+
+
 
 }
 

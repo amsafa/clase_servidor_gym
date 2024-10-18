@@ -13,7 +13,5 @@ public class PagoDTO {
     private Integer id;
     private Integer socioId;
     private Double monto;
-    private LocalDate fecha;
-    private Integer tipoPago;
 
 }

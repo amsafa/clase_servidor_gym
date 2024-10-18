@@ -1,9 +1,9 @@
 package com.example.gym_safa.controladores;
 
-
 import com.example.gym_safa.dto.AsistenciaResumenDTO;
+import com.example.gym_safa.dto.PagoDTO;
 import com.example.gym_safa.dto.SocioDTO;
-import com.example.gym_safa.modelos.Socio;
+import com.example.gym_safa.servicios.PagoService;
 import com.example.gym_safa.servicios.SocioService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,25 +18,17 @@ public class SocioController {
 
     @Autowired
     private SocioService socioService;
+    private PagoService pagoService;
 
     @GetMapping("/listar")
     public List<SocioDTO> getAllSocios() {
         return socioService.getAllSocios();
     }
 
-    // Esta es una forma de hacer extraer el id de la url
-
-   @GetMapping("/id/")
+    @GetMapping("/id/")
     public SocioDTO getSociosById(@RequestParam Integer id) {
         return socioService.getSociosById(id);
-}
-
-    // Esta es otra forma de hacer extraer el id de la url
-//    @GetMapping("/id/{id}")
-//    public Socio getSociosByPath(@PathVariable Integer id) {
-//        Socio socio = socioService.getSociosById(id);
-//        return socio;
-//    }
+    }
 
     @PostMapping("/guardar")
     public SocioDTO guardarModificarSocio(@RequestBody SocioDTO socioDTO) {
@@ -53,9 +45,8 @@ public class SocioController {
         return socioService.getAsistenciaResumenBySocioId(socioId);
     }
 
-
-
-
-
-
+    @GetMapping("/pagos")
+    public List<PagoDTO> getPagosBySocioId(@RequestParam Integer socioId) {
+        return pagoService.getPagosBySocioId(socioId);
+    }
 }

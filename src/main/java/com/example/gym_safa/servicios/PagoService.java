@@ -28,10 +28,8 @@ public class PagoService {
         Pago pago = pagoRepository.findById(id).get();
         PagoDTO dto = new PagoDTO();
         dto.setId(pago.getId());
-        dto.setFecha(pago.getFecha());
         dto.setMonto(pago.getMonto());
         dto.setSocioId(pago.getSocio().getId());
-        dto.setTipoPago(pago.getTipo_pago().ordinal());
         return dto;
     }
 
@@ -46,10 +44,8 @@ public class PagoService {
         for (Pago pago : pagos) {
             PagoDTO dto = new PagoDTO();
             dto.setId(pago.getId());
-            dto.setFecha(pago.getFecha());
             dto.setMonto(pago.getMonto());
             dto.setSocioId(pago.getSocio().getId());
-            dto.setTipoPago(pago.getTipo_pago().ordinal());
             pagoDTOS.add(dto);
         }
         return pagoDTOS;
@@ -66,10 +62,9 @@ public class PagoService {
     public PagoDTO guardarPago(PagoDTO pagoDTO) {
         Pago pago = new Pago();
         pago.setId(pagoDTO.getId());
-        pago.setFecha(pagoDTO.getFecha());
         pago.setMonto(pagoDTO.getMonto());
         pago.setSocio(socioRepository.findById(pagoDTO.getSocioId()).get());
-        pago.setTipo_pago(TipoPago.values()[pagoDTO.getTipoPago()]);
+
         pagoRepository.save(pago);
         return pagoDTO;
     }
@@ -82,6 +77,22 @@ public class PagoService {
     public void eliminarPago(Integer id) {
         pagoRepository.deleteById(id);
 
+    }
+
+
+    public List<PagoDTO> getPagosBySocioId(Integer socioId) {
+        List<PagoDTO> pagoDTOS = new ArrayList<>();
+        List<Pago> pagos = pagoRepository.findBySocioId(socioId);
+        for (Pago pago : pagos) {
+            PagoDTO dto = new PagoDTO();
+            dto.setId(pago.getId());
+
+            dto.setMonto(pago.getMonto());
+            dto.setSocioId(pago.getSocio().getId());
+
+            pagoDTOS.add(dto);
+        }
+        return pagoDTOS;
     }
 }
 
