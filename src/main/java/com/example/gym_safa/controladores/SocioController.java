@@ -49,8 +49,8 @@ public class SocioController {
     }
 
     @GetMapping("/asistencia")
-    public AsistenciaResumenDTO getAsistenciaResumenBySocioId(@RequestParam Integer id_socio) {
-        return socioService.getAsistenciaResumenBySocioId(id_socio);
+    public AsistenciaResumenDTO getAsistenciaResumenBySocioId(@RequestParam Integer socioId) {
+        return socioService.getAsistenciaResumenBySocioId(socioId);
     }
 
 

@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class AsistenciaResumenDTO {
-    private Socio socio;
+    private Integer socioId;
     private Integer totalDias;
     private Long totalHoras;
 }

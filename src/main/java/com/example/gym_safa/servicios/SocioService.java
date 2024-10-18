@@ -112,24 +112,14 @@ public class SocioService {
      *
      * @return
      */
-public AsistenciaResumenDTO getAsistenciaResumenBySocioId(Integer socio) {
-    List<Asistencia> asistencias = asistenciaRepository.findAll();
-    int totalDias = asistencias.size();
-    long totalHoras = asistencias.stream()
-            .mapToLong(a -> Duration.between(a.getFechaEntrada(), a.getFechaSalida()).toHours())
-            .sum();
-    Socio socioEntity = socioRepository.findById(socio).orElse(null);
-    return new AsistenciaResumenDTO(socioEntity, totalDias, totalHoras);
-}
-
-
-
-
-
-
-
-
-
+    public AsistenciaResumenDTO getAsistenciaResumenBySocioId(Integer socioId) {
+        List<Asistencia> asistencias = asistenciaRepository.findBySocioId(socioId);
+        int totalDias = asistencias.size();
+        long totalHoras = asistencias.stream()
+                .mapToLong(a -> Duration.between(a.getFechaEntrada(), a.getFechaSalida()).toHours())
+                .sum();
+        return new AsistenciaResumenDTO(socioId, totalDias, totalHoras);
+    }
 
 }
 
