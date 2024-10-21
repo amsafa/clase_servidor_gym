@@ -38,4 +38,8 @@ public class PagoController {
     public void eliminarPago(@RequestParam Integer id) {
         pagoService.eliminarPago(id);
     }
+
+
+    // Ejercicio 3
+
 }

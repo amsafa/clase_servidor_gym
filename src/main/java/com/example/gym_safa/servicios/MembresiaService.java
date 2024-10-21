@@ -3,7 +3,9 @@ package com.example.gym_safa.servicios;
 import com.example.gym_safa.dto.MembresiaDTO;
 import com.example.gym_safa.enumerados.NombreMembresia;
 import com.example.gym_safa.modelos.Membresia;
+import com.example.gym_safa.modelos.Socio;
 import com.example.gym_safa.repositorios.MembresiaRepository;
+import com.example.gym_safa.repositorios.SocioRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,8 @@ import java.util.List;
 public class MembresiaService {
 
     private MembresiaRepository membresiaRepository;
+
+    private SocioRepository socioRepository;
 
     /** Metodo que devuelve todas las membresias
      *
@@ -69,6 +73,7 @@ public MembresiaDTO modificarMembresia(MembresiaDTO membresiaDTO) {
         membresiaRepository.deleteById(id);
 
     }
+    // socio.getMembresia() == new Membresia()
 
 
 

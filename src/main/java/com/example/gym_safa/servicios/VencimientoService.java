@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 
-public class VencimientoMembresiaService {
+public class VencimientoService {
 
     private VencimientoMembresiaRepository vencimientosMembresiaRepository;
 

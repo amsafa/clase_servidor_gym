@@ -64,8 +64,14 @@ public class SocioService {
         dto.setCuenta_bancaria(socio.getCuenta_bancaria());
         dto.setTelefono(socio.getTelefono());
         dto.setEmail(socio.getEmail());
+
+        if (socio.getMembresia() == null) {
+            throw new RuntimeException("No se puede mostrar los datos porque falta la membresía por contratar");
+        }
         dto.setMembresiaId(socio.getMembresia().getId());
         dto.setFecha_registro(socio.getFecha_registro());
+
+
         return dto;
 
     }
@@ -99,9 +105,15 @@ public class SocioService {
      * @param id
      */
 
-    public void deleteSocios(Integer id) {
+    //Ejercicio 6 REPASAR
 
-        socioRepository.deleteById(id);
+    public String deleteSocios(Integer id) {
+        try {
+            socioRepository.deleteById(id);
+            return "Socio eliminado";
+        } catch (Exception e) {
+            throw new RuntimeException("No se ha podido eliminar el socio");
+        }
     }
 
     /**
@@ -109,6 +121,8 @@ public class SocioService {
      *
      * @return
      */
+
+    //EJercicio 2
     public AsistenciaResumenDTO getAsistenciaResumenBySocioId(Integer socioId) {
         List<Asistencia> asistencias = asistenciaRepository.findBySocioId(socioId);
         int totalDias = asistencias.size();
@@ -119,11 +133,6 @@ public class SocioService {
     }
 
 
-    /**
-     * Este método devuelve el gasto total de un socio
-     *
-     *  @return
-     */
 
 
 
@@ -134,7 +143,7 @@ public class SocioService {
 
 
 
-}
+    }
 
 
 

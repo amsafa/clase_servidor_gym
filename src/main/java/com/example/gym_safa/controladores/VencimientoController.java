@@ -1,8 +1,7 @@
 package com.example.gym_safa.controladores;
 
-import com.example.gym_safa.dto.SocioDTO;
 import com.example.gym_safa.dto.VencimientoDTO;
-import com.example.gym_safa.servicios.VencimientoMembresiaService;
+import com.example.gym_safa.servicios.VencimientoService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +16,10 @@ import java.util.List;
 public class VencimientoController {
 
     @Autowired
-    private VencimientoMembresiaService vencimientoSevice;
+    private VencimientoService vencimientoSevice;
 
     @GetMapping("/listar")
-    public List<VencimientoDTO> getVencimientosAll() {
+    public List<VencimientoDTO> getTodosVencimientos() {
         return vencimientoSevice.getVencimientosAll();
     }
 

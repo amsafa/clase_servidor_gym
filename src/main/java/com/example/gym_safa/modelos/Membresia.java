@@ -28,4 +28,6 @@ public class Membresia {
 
     @Column(name = "precio", nullable = false)
     private Double precio;
+
+
 }

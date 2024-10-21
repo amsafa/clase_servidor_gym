@@ -79,6 +79,12 @@ public class PagoService {
 
     }
 
+    /**
+     * Devuelve todos los pagos de un socio
+     * @param socioId
+     * @return
+     */
+
 
     public List<PagoDTO> getPagosBySocioId(Integer socioId) {
         List<PagoDTO> pagoDTOS = new ArrayList<>();
@@ -86,13 +92,29 @@ public class PagoService {
         for (Pago pago : pagos) {
             PagoDTO dto = new PagoDTO();
             dto.setId(pago.getId());
-
             dto.setMonto(pago.getMonto());
             dto.setSocioId(pago.getSocio().getId());
-
             pagoDTOS.add(dto);
         }
         return pagoDTOS;
     }
+
+    /**
+     * Devuelve el total de pagos de un socio
+     * @param socioId
+     * @return
+     */
+
+    //Ejercicio 3
+
+    public Double getTotalPagoBySocioId(Integer socioId) {
+        List<Pago> pagos = pagoRepository.findBySocioId(socioId);
+        double totalMonto = pagos.stream()
+                .mapToDouble(Pago::getMonto)
+                .sum();
+        return totalMonto;
+    }
+
+
 }
 

@@ -45,8 +45,11 @@ public class SocioController {
         return socioService.getAsistenciaResumenBySocioId(socioId);
     }
 
-    @GetMapping("/pagos")
-    public List<PagoDTO> getPagosBySocioId(@RequestParam Integer socioId) {
-        return pagoService.getPagosBySocioId(socioId);
+
+    // EJercicio 3
+
+    @GetMapping("/gasto")
+    public Double getPagosBySocioId(@RequestParam Integer socioId) {
+        return pagoService.getTotalPagoBySocioId(socioId);
     }
 }
