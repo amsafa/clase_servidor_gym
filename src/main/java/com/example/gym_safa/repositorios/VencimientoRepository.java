@@ -4,8 +4,12 @@ import com.example.gym_safa.modelos.Vencimiento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 
-public interface VencimientoMembresiaRepository extends  JpaRepository<Vencimiento, Integer> {
+public interface VencimientoRepository extends  JpaRepository<Vencimiento, Integer> {
+
+    List<Vencimiento> findBySocioId(Integer id);
 
 }

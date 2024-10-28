@@ -1,5 +1,6 @@
 package com.example.gym_safa.dto;
 
+import com.example.gym_safa.enumerados.NombreMembresia;
 import com.example.gym_safa.modelos.Socio;
 import lombok.AllArgsConstructor;
 import lombok.Data;

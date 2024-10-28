@@ -1,9 +1,12 @@
 package com.example.gym_safa.controladores;
 
 import com.example.gym_safa.dto.VencimientoDTO;
+import com.example.gym_safa.modelos.Vencimiento;
 import com.example.gym_safa.servicios.VencimientoService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +39,11 @@ public class VencimientoController {
     @DeleteMapping("/eliminar")
     public void eliminarVencimientoId(@RequestParam Integer id) {
         vencimientoSevice.eliminarVencimiento(id);
+    }
+
+    @PostMapping("/renovarAbono")
+    public Vencimiento renovarAbono(@RequestParam Integer idSocio) {
+        return vencimientoSevice.renovarAbono(idSocio);
     }
 
 }

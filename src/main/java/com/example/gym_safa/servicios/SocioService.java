@@ -2,13 +2,19 @@ package com.example.gym_safa.servicios;
 
 import com.example.gym_safa.dto.AsistenciaResumenDTO;
 import com.example.gym_safa.dto.SocioDTO;
+import com.example.gym_safa.dto.VencimientoDTO;
 import com.example.gym_safa.modelos.Asistencia;
+import com.example.gym_safa.modelos.Membresia;
 import com.example.gym_safa.modelos.Socio;
+import com.example.gym_safa.modelos.Vencimiento;
 import com.example.gym_safa.repositorios.AsistenciaRepository;
 import com.example.gym_safa.repositorios.SocioRepository;
 import lombok.AllArgsConstructor;
+import org.antlr.v4.runtime.misc.LogManager;
 import org.springframework.stereotype.Service;
+import com.example.gym_safa.repositorios.VencimientoRepository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,6 +81,10 @@ public class SocioService {
         return dto;
 
     }
+    public Socio getSocioById(Integer id) {
+        return socioRepository.findById(id).orElse(null);
+    }
+
 
     /**
      * Guarda o modifica un socio
@@ -105,14 +115,18 @@ public class SocioService {
      * @param id
      */
 
-    //Ejercicio 6 REPASAR
+    //Ejercicio 6
 
     public String deleteSocios(Integer id) {
         try {
+            Socio socio = socioRepository.findById(id).orElseThrow(() -> new RuntimeException("Socio no encontrado."));
+            if (socio.getMembresia() == null) {
+                throw new RuntimeException("No se ha podido eliminar el socio, falta la membresia.");
+            }
             socioRepository.deleteById(id);
             return "Socio eliminado";
         } catch (Exception e) {
-            throw new RuntimeException("No se ha podido eliminar el socio");
+            return e.getMessage();
         }
     }
 
@@ -133,6 +147,7 @@ public class SocioService {
     }
 
 
+    //Ejercicio 4
 
 
 
