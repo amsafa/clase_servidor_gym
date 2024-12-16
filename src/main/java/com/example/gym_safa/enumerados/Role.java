@@ -1,6 +1,6 @@
 package com.example.gym_safa.enumerados;
 
-public enum TipoUsuario {
+public enum Role {
     ADMINISTRADOR,
     ENTRENADOR,
     RECEPCIONISTA,

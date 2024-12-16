@@ -1,6 +1,6 @@
 package com.example.gym_safa.modelos;
 
-import com.example.gym_safa.enumerados.TipoUsuario;
+import com.example.gym_safa.enumerados.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,5 +28,5 @@ public class Usuario {
 
     @Column(name = "rol", nullable = false)
     @Enumerated(EnumType.ORDINAL)
-    private TipoUsuario rol;
+    private Role rol;
 }
