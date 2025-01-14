@@ -8,11 +8,15 @@ import com.example.gym_safa.repositorios.MembresiaRepository;
 import com.example.gym_safa.repositorios.SocioRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Validated
 public class MembresiaService {
 
     private MembresiaRepository membresiaRepository;
@@ -24,8 +28,34 @@ public class MembresiaService {
      *
      * @return
      */
-    public List<Membresia> getAllMembresias() {
-        return membresiaRepository.findAll();
+
+
+    public List<MembresiaDTO> getAllMembresias() {
+        List<Membresia> membresias = membresiaRepository.findAll();
+        List<MembresiaDTO> membresiaDTOS = new ArrayList<>();
+
+
+
+        for(Membresia m: membresias){
+
+            if(m.getDuracionMeses() == 0){
+                throw new IllegalArgumentException("La duracion de la membresia no puede ser 0");
+            }
+            if(m.getPrecio() == 0){
+                throw new IllegalArgumentException("El precio de la membresia no puede ser 0");
+            }
+            MembresiaDTO membresiaDTO = new MembresiaDTO();
+            membresiaDTO.setNombre(NombreMembresia.valueOf(m.getNombre().name()));
+            membresiaDTO.setPrecio(m.getPrecio());
+            membresiaDTO.setDuracionMeses(m.getDuracionMeses());
+            membresiaDTOS.add(membresiaDTO);
+        }
+
+
+
+
+
+        return membresiaDTOS;
     }
 
     /**

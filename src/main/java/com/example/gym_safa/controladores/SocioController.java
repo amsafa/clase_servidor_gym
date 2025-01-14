@@ -86,8 +86,21 @@ public ResponseEntity<String> deleteSocios(@RequestParam Integer id) {
         return pagoService.getTotalPagoBySocioId(socioId);
     }
 
+    // Ejercicio 4, renovar membresía en caso de tener abono activo.
 
-    // EJercicio 4
+    @PostMapping("/renovar-membresia")
+    public ResponseEntity<VencimientoDTO> renovarMembresia(@RequestParam("socioId") Integer socioId) {
+        try {
+            VencimientoDTO vencimientoDTO = socioService.renovarMembresia(socioId);
+            return ResponseEntity.ok(vencimientoDTO);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+
+
+
 
 
 

@@ -5,7 +5,7 @@ import lombok.*;
 import com.example.gym_safa.enumerados.NombreMembresia;
 
 @Entity
-@Table(name = "membresia", schema = "gym_db", catalog = "postgres")
+@Table(name = "membresia", schema = "gym_db")
 @Getter
 @Setter
 @ToString

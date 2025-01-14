@@ -7,9 +7,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-
 public interface VencimientoRepository extends  JpaRepository<Vencimiento, Integer> {
 
-    List<Vencimiento> findBySocioId(Integer id);
+
+    List<Vencimiento> findBySocioId(Integer socioId);
+
+    //Vencimiento findBySocioId(Integer socioId);
+
 
 }
+

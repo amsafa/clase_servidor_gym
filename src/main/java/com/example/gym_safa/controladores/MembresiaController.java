@@ -21,27 +21,27 @@ public class MembresiaController {
     @Autowired
     private MembresiaService membresiaService;
 
-    @GetMapping("/bonos")
-    public List<Membresia> getAllMembresias() {
-        List<Membresia> membresias = membresiaService.getAllMembresias();
-        return membresias;
+   // @GetMapping("/bonos")
+    //public List<Membresia> getAllMembresias() {
+   //     List<Membresia> membresias = membresiaService.getAllMembresias();
+    //    return membresias;
     }
 
-    @GetMapping("/id")
-    public Membresia getMembresiasById(@RequestParam Integer id) {
+   // @GetMapping("/id")
+    //public Membresia getMembresiasById(@RequestParam Integer id) {
 
-        return membresiaService.getMembresiasById(id);
-    }
-
-
-
-    @PostMapping("/modificar")
-    public MembresiaDTO modificarMembresia(@RequestBody MembresiaDTO membresiaDTO) {
-        return membresiaService.modificarMembresia(membresiaDTO);
-    }
+      //  return membresiaService.getMembresiasById(id);
+   // }
 
 
 
+    //@PostMapping("/modificar")
+    //public MembresiaDTO modificarMembresia(@RequestBody MembresiaDTO membresiaDTO) {
+     //   return membresiaService.modificarMembresia(membresiaDTO);
+    //}
 
 
-}
+
+
+
+

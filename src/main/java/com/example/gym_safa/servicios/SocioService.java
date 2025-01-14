@@ -1,21 +1,26 @@
 package com.example.gym_safa.servicios;
 
+
 import com.example.gym_safa.dto.AsistenciaResumenDTO;
 import com.example.gym_safa.dto.SocioDTO;
 import com.example.gym_safa.dto.VencimientoDTO;
+import com.example.gym_safa.enumerados.Estado;
 import com.example.gym_safa.modelos.Asistencia;
 import com.example.gym_safa.modelos.Membresia;
 import com.example.gym_safa.modelos.Socio;
 import com.example.gym_safa.modelos.Vencimiento;
 import com.example.gym_safa.repositorios.AsistenciaRepository;
 import com.example.gym_safa.repositorios.SocioRepository;
-import lombok.AllArgsConstructor;
-import org.antlr.v4.runtime.misc.LogManager;
-import org.springframework.stereotype.Service;
 import com.example.gym_safa.repositorios.VencimientoRepository;
+import lombok.AllArgsConstructor;
+
+import org.springframework.stereotype.Service;
+
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import java.time.Duration;
@@ -27,6 +32,7 @@ public class SocioService {
     private SocioRepository socioRepository;
     private MembresiaService membresiaService;
     private AsistenciaRepository asistenciaRepository;
+    private VencimientoRepository vencimientoRepository;
 
     /**
      * Este método devuelve todos los socios
@@ -147,18 +153,60 @@ public class SocioService {
     }
 
 
-    //Ejercicio 4
+    /**
+     * Este método devuelve los vencimientos de un socio
+     *
+     * @param socioId
+     */
 
 
 
+    public VencimientoDTO renovarMembresia(Integer socioId) {
+        List<Vencimiento> listVencimientoaAntiguo = vencimientoRepository.findBySocioId(socioId);
+        listVencimientoaAntiguo.sort(Comparator.comparing(Vencimiento::getFecha_fin).reversed());
 
+        Vencimiento vencimientoantiguo = listVencimientoaAntiguo.get(0);
 
+        if (vencimientoantiguo == null) {
+            throw new RuntimeException("No se puede renovar el abono porque no existe");
+        }
 
+        LocalDate fechaFin = vencimientoantiguo.getFecha_fin();
+        LocalDate fechaInicio = vencimientoantiguo.getFecha_inicio();
 
+        Period periodo = Period.between(fechaInicio, fechaFin);
+        Integer diferenciaMeses = periodo.getYears() * 12 + periodo.getMonths();
 
+        LocalDate nuevaFechaFin = fechaFin.plusMonths(diferenciaMeses);
 
+        Vencimiento vencimientoNuevo = new Vencimiento();
+        vencimientoNuevo.setFecha_inicio(vencimientoantiguo.getFecha_fin());
+        vencimientoNuevo.setFecha_fin(nuevaFechaFin);
+        vencimientoNuevo.setEstado(Estado.ACTIVO);
+        vencimientoNuevo.setSocio(vencimientoantiguo.getSocio());
 
+        vencimientoRepository.save(vencimientoNuevo);
+
+        VencimientoDTO vencimientoDTO = new VencimientoDTO();
+        vencimientoDTO.setId(vencimientoNuevo.getId());
+        vencimientoDTO.setFecha_fin(vencimientoNuevo.getFecha_fin());
+
+        return vencimientoDTO;
     }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

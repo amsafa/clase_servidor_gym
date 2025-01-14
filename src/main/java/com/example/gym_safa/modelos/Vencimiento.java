@@ -6,7 +6,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@Table(name = "vencimiento", schema = "gym_db", catalog = "postgres")
+@Table(name = "vencimientos_membresias", schema = "gym_db")
 @Getter
 @Setter
 @ToString
@@ -33,8 +33,8 @@ public class Vencimiento {
     @Column (name = "fecha_f", nullable = false)
     private  LocalDate fecha_fin;
 
-    @Column (name = "estado")
-    @Enumerated(EnumType.ORDINAL)
+    @Column (name = "estado", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Estado estado;
 
 
