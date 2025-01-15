@@ -43,29 +43,25 @@ public class MembresiaServiceTest {
 
 
 
-    @BeforeEach
-    public void InicializarBaseDatos()  {
 
 
-
+    @Test
+    public void TestGetBonosPositivo() {
+        //GIVEN
         Membresia membresia1 = new Membresia();
         membresia1.setNombre(NombreMembresia.Basico);
         membresia1.setPrecio(100.0);
         membresia1.setDuracionMeses(3);
-        repository.save(membresia1);
+
 
         Membresia membresia2 = new Membresia();
         membresia2.setNombre(NombreMembresia.Intermedio);
         membresia2.setPrecio(200.0);
         membresia2.setDuracionMeses(6);
-        repository.save(membresia2);
 
+        // Simulamos que estas membresías se encuentran en la base de datos
+        when(membresiaRepository.findAll()).thenReturn(List.of(membresia1, membresia2));
 
-    }
-
-    @Test
-    public void TestGetBonosPositivo() {
-        //GIVEN
 
         //WHEN
        List <MembresiaDTO> membresias = service.getAllMembresias();
