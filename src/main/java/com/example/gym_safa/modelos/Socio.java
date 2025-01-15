@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "socio", schema = "gym_db")
@@ -44,6 +46,8 @@ public class Socio {
 
     @Column(name = "fecha_registro", nullable = false)
     private LocalDate fecha_registro;
+
+
 
 
 

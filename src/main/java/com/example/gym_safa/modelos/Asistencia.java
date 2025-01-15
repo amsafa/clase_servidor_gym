@@ -22,9 +22,10 @@ public class Asistencia {
     @Column(name = "asistencia_id")
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "socio_id", nullable = false)
     private Socio socio;
+
 
     @Column(name = "fecha_entrada", nullable = false)
     private LocalDateTime fechaEntrada;

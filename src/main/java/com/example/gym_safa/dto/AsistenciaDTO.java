@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class AsistenciaDTO {
 
-   private Integer id;
+
    private Integer socioId;
    private LocalDateTime fechaEntrada;
    private LocalDateTime fechaSalida;

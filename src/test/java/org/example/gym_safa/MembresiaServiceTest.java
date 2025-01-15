@@ -64,7 +64,7 @@ public class MembresiaServiceTest {
     }
 
     @Test
-    public void testGetAllMembresias() {
+    public void TestGetBonosPositivo() {
         //GIVEN
 
         //WHEN
@@ -75,7 +75,7 @@ public class MembresiaServiceTest {
     }
 
     @Test
-    public void testGetAllMembresiasNegativo() {
+    public void TestGetBonosNegativo() {
         //GIVEN: Creamos una membresía con duración 0
         Membresia membresia3 = new Membresia();
         membresia3.setNombre(NombreMembresia.Invencible);
