@@ -169,6 +169,52 @@ public class SocioService {
         return vencimientoDTO;
     }
 
+    public VencimientoDTO renovarMembresiaSocio(Integer socioId) {
+        // Obtiene la lista de vencimientos asociados al socio
+        List<Vencimiento> listVencimientoaAntiguo = vencimientoRepository.findBySocioId(socioId);
+
+        // Si no hay ningún vencimiento asociado al socio, lanza una excepción con un mensaje claro
+        if (listVencimientoaAntiguo == null || listVencimientoaAntiguo.isEmpty()) {
+            throw new RuntimeException("Este socio no tiene abono contratado");
+        }
+
+        // Ordena los vencimientos por fecha de fin de forma descendente
+        listVencimientoaAntiguo.sort(Comparator.comparing(Vencimiento::getFecha_fin).reversed());
+
+        // Obtiene el último vencimiento
+        Vencimiento vencimientoAntiguo = listVencimientoaAntiguo.get(0);
+
+        LocalDate fechaFin = vencimientoAntiguo.getFecha_fin();
+        LocalDate fechaInicio = vencimientoAntiguo.getFecha_inicio();
+
+        // Calcula la duración de la membresía anterior en meses
+        Period periodo = Period.between(fechaInicio, fechaFin);
+        Integer diferenciaMeses = periodo.getYears() * 12 + periodo.getMonths();
+
+        // Calcula la nueva fecha de fin
+        LocalDate nuevaFechaFin = fechaFin.plusMonths(diferenciaMeses);
+
+        // Crea un nuevo vencimiento con las fechas actualizadas
+        Vencimiento vencimientoNuevo = new Vencimiento();
+        vencimientoNuevo.setFecha_inicio(vencimientoAntiguo.getFecha_fin());
+        vencimientoNuevo.setFecha_fin(nuevaFechaFin);
+        vencimientoNuevo.setEstado(Estado.ACTIVO);
+        vencimientoNuevo.setSocio(vencimientoAntiguo.getSocio());
+
+        // Guarda el nuevo vencimiento en el repositorio
+        vencimientoRepository.save(vencimientoNuevo);
+
+        // Crea y retorna el DTO con los datos del nuevo vencimiento
+        VencimientoDTO vencimientoDTO = new VencimientoDTO();
+        vencimientoDTO.setId(vencimientoNuevo.getId());
+        vencimientoDTO.setFechaInicio(vencimientoNuevo.getFecha_inicio());
+        vencimientoDTO.setFechaFin(vencimientoNuevo.getFecha_fin());
+        vencimientoDTO.setEstado(vencimientoNuevo.getEstado().name());
+
+        return vencimientoDTO;
+    }
+
+
 }
 
 
