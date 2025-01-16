@@ -22,6 +22,9 @@ public class Pago {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Vencimiento vencimiento;
+
     @ManyToOne (cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "socio_id", nullable = false)
     private Socio socio;
@@ -30,11 +33,11 @@ public class Pago {
     private Double monto;
 
     @Column(name = "fecha_pago", nullable = false)
-    private LocalDate fecha;
+    private LocalDate fechaPago;
 
     @Enumerated(EnumType.ORDINAL)
     @Column (name = "tipo_pago")
-    private TipoPago tipo_pago;
+    private TipoPago tipoPago;
 
 }
 

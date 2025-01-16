@@ -40,12 +40,18 @@ public class Socio {
     @Column(name = "correo", unique = true, nullable = false)
     private String email;
 
-    @ManyToOne (cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinColumn(name = "membresia_id")
-    private Membresia membresia;
+
 
     @Column(name = "fecha_registro", nullable = false)
     private LocalDate fecha_registro;
+
+    @OneToMany(mappedBy = "socio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Vencimiento> vencimientos;
+
+    @OneToMany(mappedBy = "socio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Pago> pagos;
+
+
 
 
 

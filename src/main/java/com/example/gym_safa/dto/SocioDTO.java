@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -12,11 +13,16 @@ import java.time.LocalDate;
 public class SocioDTO {
     private Integer id;
     private String nombre;
-    private String DNI;
-    private LocalDate fecha_nacimiento;
-    private Integer cuenta_bancaria;
+    private String dni;
+    private LocalDate fechaNacimiento;
+    private Integer cuentaBancaria;
     private String telefono;
     private String email;
-    private Integer membresiaId;
-    private LocalDate fecha_registro;
+    private LocalDate fechaRegistro;
+
+    // Relación con vencimientos y pagos
+    private List<VencimientoDTO> vencimientos;
+    private List<PagoDTO> pagos;
+
+    // Getters y setters
 }

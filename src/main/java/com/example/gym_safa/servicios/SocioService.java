@@ -47,13 +47,15 @@ public class SocioService {
             SocioDTO dto = new SocioDTO();
             dto.setId(socio.getId());
             dto.setNombre(socio.getNombre());
-            dto.setDNI(socio.getDNI());
-            dto.setFecha_nacimiento(socio.getFecha_nacimiento());
-            dto.setCuenta_bancaria(socio.getCuenta_bancaria());
+            dto.setDni(socio.getDNI());
+            dto.setFechaNacimiento(socio.getFecha_nacimiento());
+            dto.setCuentaBancaria(socio.getCuenta_bancaria());
             dto.setTelefono(socio.getTelefono());
             dto.setEmail(socio.getEmail());
-            dto.setMembresiaId(socio.getMembresia().getId());
-            dto.setFecha_registro(socio.getFecha_registro());
+            dto.setFechaRegistro(socio.getFecha_registro());
+            dto.setVencimientos(new ArrayList<>());
+            dto.setPagos(new ArrayList<>());
+
             socioDTOS.add(dto);
         }
         return socioDTOS;
@@ -66,30 +68,6 @@ public class SocioService {
      * @return
      */
 
-    public SocioDTO getSociosById(Integer id) {
-        Socio socio = socioRepository.findById(id).get();
-        SocioDTO dto = new SocioDTO();
-        dto.setId(socio.getId());
-        dto.setNombre(socio.getNombre());
-        dto.setDNI(socio.getDNI());
-        dto.setFecha_nacimiento(socio.getFecha_nacimiento());
-        dto.setCuenta_bancaria(socio.getCuenta_bancaria());
-        dto.setTelefono(socio.getTelefono());
-        dto.setEmail(socio.getEmail());
-
-        if (socio.getMembresia() == null) {
-            throw new RuntimeException("No se puede mostrar los datos porque falta la membresía por contratar");
-        }
-        dto.setMembresiaId(socio.getMembresia().getId());
-        dto.setFecha_registro(socio.getFecha_registro());
-
-
-        return dto;
-
-    }
-    public Socio getSocioById(Integer id) {
-        return socioRepository.findById(id).orElse(null);
-    }
 
 
     /**
@@ -103,13 +81,12 @@ public class SocioService {
     Socio socio = new Socio();
     socio.setId(socios.getId());
     socio.setNombre(socios.getNombre());
-    socio.setDNI(socios.getDNI());
-    socio.setFecha_nacimiento(socios.getFecha_nacimiento());
-    socio.setCuenta_bancaria(socios.getCuenta_bancaria());
+    socio.setDNI(socios.getDni());
+    socio.setFecha_nacimiento(socios.getFechaNacimiento());
+    socio.setCuenta_bancaria(socios.getCuentaBancaria());
     socio.setTelefono(socios.getTelefono());
     socio.setEmail(socios.getEmail());
-    socio.setMembresia(socio.getMembresia());
-    socio.setFecha_registro(socios.getFecha_registro());
+    socio.setFecha_registro(socios.getFechaRegistro());
     socioRepository.save(socio);
     return socios;
 }
@@ -126,9 +103,7 @@ public class SocioService {
     public String deleteSocios(Integer id) {
         try {
             Socio socio = socioRepository.findById(id).orElseThrow(() -> new RuntimeException("Socio no encontrado."));
-            if (socio.getMembresia() == null) {
-                throw new RuntimeException("No se ha podido eliminar el socio, falta la membresia.");
-            }
+
             socioRepository.deleteById(id);
             return "Socio eliminado";
         } catch (Exception e) {
@@ -189,7 +164,7 @@ public class SocioService {
 
         VencimientoDTO vencimientoDTO = new VencimientoDTO();
         vencimientoDTO.setId(vencimientoNuevo.getId());
-        vencimientoDTO.setFecha_fin(vencimientoNuevo.getFecha_fin());
+        vencimientoDTO.setFechaFin(vencimientoNuevo.getFecha_fin());
 
         return vencimientoDTO;
     }

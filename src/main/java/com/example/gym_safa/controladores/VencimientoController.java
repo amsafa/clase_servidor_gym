@@ -31,10 +31,7 @@ public class VencimientoController {
         return vencimientoSevice.getVencimientoById(id);
     }
 
-    @PostMapping("/editar")
-    public VencimientoDTO editarVencimiento(@RequestBody VencimientoDTO vencimientoDTO) {
-        return vencimientoSevice.modificarVencimiento(vencimientoDTO);
-    }
+
 
     @DeleteMapping("/eliminar")
     public void eliminarVencimientoId(@RequestParam Integer id) {

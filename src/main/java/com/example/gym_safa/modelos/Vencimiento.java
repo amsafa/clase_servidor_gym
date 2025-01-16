@@ -37,5 +37,8 @@ public class Vencimiento {
     @Enumerated(EnumType.STRING)
     private Estado estado;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Membresia membresia;
+
 
 }

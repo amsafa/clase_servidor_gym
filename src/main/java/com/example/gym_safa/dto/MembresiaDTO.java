@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MembresiaDTO {
-    private Integer socioId;
     private Integer id;
     private NombreMembresia nombre;
     private Integer duracionMeses;

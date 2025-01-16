@@ -30,10 +30,7 @@ public class SocioController {
         return socioService.getAllSocios();
     }
 
-    @GetMapping("/id/")
-    public SocioDTO getSociosById(@RequestParam Integer id) {
-        return socioService.getSociosById(id);
-    }
+
 
     @PostMapping("/guardar")
     public SocioDTO guardarModificarSocio(@RequestBody SocioDTO socioDTO) {

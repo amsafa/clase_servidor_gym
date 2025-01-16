@@ -11,7 +11,13 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class PagoDTO {
     private Integer id;
-    private Integer socioId;
     private Double monto;
+    private LocalDate fechaPago;
+    private String tipoPago;
+
+    // Relaciones
+    private Integer socioId;         // ID del socio asociado
+    private Integer vencimientoId;   // ID del vencimiento asociado
 
 }
+

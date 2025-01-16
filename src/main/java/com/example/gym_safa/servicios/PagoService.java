@@ -2,6 +2,7 @@ package com.example.gym_safa.servicios;
 
 import com.example.gym_safa.dto.PagoDTO;
 import com.example.gym_safa.modelos.Pago;
+import com.example.gym_safa.modelos.Vencimiento;
 import com.example.gym_safa.repositorios.PagoRepository;
 import com.example.gym_safa.repositorios.SocioRepository;
 import org.springframework.stereotype.Service;
@@ -114,6 +115,39 @@ public class PagoService {
                 .sum();
         return totalMonto;
     }
+
+
+    public Double importeGastado(Integer idSocio) {
+        return socioRepository.findById(idSocio)
+                .map(socio -> {
+                    // Verificar que el socio tenga vencimientos
+                    if (socio.getVencimientos() == null || socio.getVencimientos().isEmpty()) {
+                        throw new RuntimeException("El socio con ID " + idSocio + " no tiene membresías registradas.");
+                    }
+
+                    // Obtener el último vencimiento
+                    Vencimiento ultimoVencimiento = socio.getVencimientos()
+                            .get(socio.getVencimientos().size() - 1);
+
+                    // Validar que el último vencimiento tenga un pago asociado
+                    boolean tienePago = socio.getPagos().stream()
+                            .anyMatch(pago -> pago.getFechaPago().isAfter(ultimoVencimiento.getFecha_inicio()) &&
+                                    pago.getFechaPago().isBefore(ultimoVencimiento.getFecha_fin()));
+
+                    if (!tienePago) {
+                        throw new RuntimeException("El socio con ID " + idSocio + " no ha pagado su última membresía.");
+                    }
+
+                    // Calcular el total gastado
+                    return socio.getVencimientos().stream()
+                            .mapToDouble(vencimiento -> vencimiento.getMembresia().getPrecio())
+                            .sum();
+                })
+                .orElseThrow(() -> new RuntimeException("El socio con ID " + idSocio + " no existe en el sistema."));
+    }
+
+
+
 
 
 }
