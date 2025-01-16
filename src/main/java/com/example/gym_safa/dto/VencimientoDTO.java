@@ -17,6 +17,7 @@ public class VencimientoDTO {
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private String estado;
+    private String mensaje;
 
     // Relaciones
     private Integer socioId;       // ID del socio asociado

@@ -88,7 +88,7 @@ public ResponseEntity<String> deleteSocios(@RequestParam Integer id) {
     @PostMapping("/renovar-membresia")
     public ResponseEntity<VencimientoDTO> renovarMembresia(@RequestParam("socioId") Integer socioId) {
         try {
-            VencimientoDTO vencimientoDTO = socioService.renovarMembresia(socioId);
+            VencimientoDTO vencimientoDTO = socioService.renovarMembresiaSocio(socioId);
             return ResponseEntity.ok(vencimientoDTO);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

@@ -55,7 +55,8 @@ public class SocioServiceTest {
         vencimientos.add(vencimientoAntiguo);
 
         // Configurar el mock del repositorio
-        Mockito.when(vencimientoRepository.findBySocioId(idSocio)).thenReturn(vencimientos);
+        Mockito.when(vencimientoRepository.findBySocioId(idSocio))
+                .thenReturn(vencimientos);
 
         // WHEN: Se renueva la membresía del socio
         VencimientoDTO resultado = socioService.renovarMembresiaSocio(idSocio);
@@ -70,7 +71,33 @@ public class SocioServiceTest {
         // Verificar que el método save fue llamado exactamente una vez
         Mockito.verify(vencimientoRepository, Mockito.times(1)).save(Mockito.any(Vencimiento.class));
 
+        // Verificar que el mensaje de renovación exitosa esté presente
+        Assertions.assertEquals("Renovación exitosa", resultado.getMensaje(),
+                "El mensaje debe ser 'Renovación exitosa'");
+
     }
+
+    @Test
+    void testRenovarAbonoNegativo() {
+        // GIVEN: Un socio sin membresía activa
+        Integer socioId = 1;
+
+        // Configurar el mock para que devuelva una lista vacía
+        Mockito.when(vencimientoRepository.findBySocioId(socioId)).thenReturn(Collections.emptyList());
+
+        // WHEN & THEN: Se lanza una excepción al intentar renovar la membresía
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
+            socioService.renovarMembresiaSocio(socioId);
+        });
+
+        Assertions.assertEquals("Este socio no tiene abono contratado", exception.getMessage());
+
+
+        // Verificar que el método save no fue llamado
+        Mockito.verify(vencimientoRepository, Mockito.never()).save(Mockito.any(Vencimiento.class));
+    }
+
+
 
 
 

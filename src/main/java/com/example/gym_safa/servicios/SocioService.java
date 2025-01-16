@@ -136,39 +136,6 @@ public class SocioService {
 
 
 
-    public VencimientoDTO renovarMembresia(Integer socioId) {
-        List<Vencimiento> listVencimientoaAntiguo = vencimientoRepository.findBySocioId(socioId);
-        listVencimientoaAntiguo.sort(Comparator.comparing(Vencimiento::getFecha_fin).reversed());
-
-        Vencimiento vencimientoantiguo = listVencimientoaAntiguo.get(0);
-
-        if (vencimientoantiguo == null) {
-            throw new RuntimeException("No se puede renovar el abono porque no existe");
-        }
-
-        LocalDate fechaFin = vencimientoantiguo.getFecha_fin();
-        LocalDate fechaInicio = vencimientoantiguo.getFecha_inicio();
-
-        Period periodo = Period.between(fechaInicio, fechaFin);
-        Integer diferenciaMeses = periodo.getYears() * 12 + periodo.getMonths();
-
-        LocalDate nuevaFechaFin = fechaFin.plusMonths(diferenciaMeses);
-
-        Vencimiento vencimientoNuevo = new Vencimiento();
-        vencimientoNuevo.setFecha_inicio(vencimientoantiguo.getFecha_fin());
-        vencimientoNuevo.setFecha_fin(nuevaFechaFin);
-        vencimientoNuevo.setEstado(Estado.ACTIVO);
-        vencimientoNuevo.setSocio(vencimientoantiguo.getSocio());
-
-        vencimientoRepository.save(vencimientoNuevo);
-
-        VencimientoDTO vencimientoDTO = new VencimientoDTO();
-        vencimientoDTO.setId(vencimientoNuevo.getId());
-        vencimientoDTO.setFechaFin(vencimientoNuevo.getFecha_fin());
-
-        return vencimientoDTO;
-    }
-
     public VencimientoDTO renovarMembresiaSocio(Integer socioId) {
         // Obtiene la lista de vencimientos asociados al socio
         List<Vencimiento> listVencimientoaAntiguo = vencimientoRepository.findBySocioId(socioId);
@@ -210,6 +177,10 @@ public class SocioService {
         vencimientoDTO.setFechaInicio(vencimientoNuevo.getFecha_inicio());
         vencimientoDTO.setFechaFin(vencimientoNuevo.getFecha_fin());
         vencimientoDTO.setEstado(vencimientoNuevo.getEstado().name());
+
+        // Añadir un mensaje de éxito
+        vencimientoDTO.setMensaje("Renovación exitosa");
+
 
         return vencimientoDTO;
     }
