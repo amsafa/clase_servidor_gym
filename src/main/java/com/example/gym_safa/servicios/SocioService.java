@@ -24,6 +24,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import java.time.Duration;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -77,19 +78,42 @@ public class SocioService {
      * @return
      */
 
-   public SocioDTO guardarModificarSocio(SocioDTO socios) {
-    Socio socio = new Socio();
-    socio.setId(socios.getId());
-    socio.setNombre(socios.getNombre());
-    socio.setDNI(socios.getDni());
-    socio.setFecha_nacimiento(socios.getFechaNacimiento());
-    socio.setCuenta_bancaria(socios.getCuentaBancaria());
-    socio.setTelefono(socios.getTelefono());
-    socio.setEmail(socios.getEmail());
-    socio.setFecha_registro(socios.getFechaRegistro());
-    socioRepository.save(socio);
-    return socios;
-}
+    public SocioDTO guardarModificarSocio(SocioDTO socios) {
+        if (socios.getDni() == null || socios.getDni().trim().isEmpty()) {
+            throw new RuntimeException("Es obligatorio");
+        }
+
+        if (socios.getEmail() == null || socios.getEmail().trim().isEmpty()) {
+            throw new RuntimeException("Es obligatorio");
+        }
+
+
+        // Verificar si el DNI ya existe en otro socio
+        Optional<Socio> socioExistente = socioRepository.findByDNI(socios.getDni());
+        if (socioExistente.isPresent() && !socioExistente.get().getId().equals(socios.getId())) {
+            throw new RuntimeException("El DNI ya está registrado en otro socio");
+        }
+
+        // Verificar si el email ya existe en otro socio
+        Optional<Socio> socioExistenteEmail = socioRepository.findByEmail(socios.getEmail());
+        if (socioExistenteEmail.isPresent() && !socioExistenteEmail.get().getId().equals(socios.getId())) {
+            throw new RuntimeException("El email ya está registrado en otro socio");
+        }
+
+
+        Socio socio = new Socio();
+        socio.setId(socios.getId());
+        socio.setNombre(socios.getNombre());
+        socio.setDNI(socios.getDni());
+        socio.setFecha_nacimiento(socios.getFechaNacimiento());
+        socio.setCuenta_bancaria(socios.getCuentaBancaria());
+        socio.setTelefono(socios.getTelefono());
+        socio.setEmail(socios.getEmail());
+        socio.setFecha_registro(socios.getFechaRegistro());
+        socioRepository.save(socio);
+        return socios;
+    }
+
 
 
     /**
