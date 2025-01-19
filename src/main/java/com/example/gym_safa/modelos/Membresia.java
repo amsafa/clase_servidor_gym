@@ -29,5 +29,7 @@ public class Membresia {
     @Column(name = "precio", nullable = false)
     private Double precio;
 
-
+    public Membresia (double precio){
+        this.precio = precio;
+    }
 }

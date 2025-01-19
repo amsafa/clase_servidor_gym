@@ -131,8 +131,9 @@ public class PagoService {
 
                     // Validar que el último vencimiento tenga un pago asociado
                     boolean tienePago = socio.getPagos().stream()
-                            .anyMatch(pago -> pago.getFechaPago().isAfter(ultimoVencimiento.getFecha_inicio()) &&
-                                    pago.getFechaPago().isBefore(ultimoVencimiento.getFecha_fin()));
+                            .anyMatch(pago -> !(pago.getFechaPago().isBefore(ultimoVencimiento.getFecha_inicio())) &&
+                                    !(pago.getFechaPago().isAfter(ultimoVencimiento.getFecha_fin())));
+
 
                     if (!tienePago) {
                         throw new RuntimeException("El socio con ID " + idSocio + " no ha pagado su última membresía.");

@@ -15,6 +15,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 @ExtendWith(MockitoExtension.class)
 public class SocioServiceIntegrationTest {
@@ -26,7 +28,7 @@ public class SocioServiceIntegrationTest {
     private SocioRepository repository; //SIMULADO
 
     @Test
-    public void testFindAllIntegracion() {
+    public void testFindAllIntegracionPrueba() {
         //GIVEN: preparacion de datos
 
         List<SocioDTO> sociosDatos = new ArrayList<>();
@@ -48,6 +50,14 @@ public class SocioServiceIntegrationTest {
 
 
         //THEN : fase de  verificacion
+
     }
+
+
+
+
+
+
+
 
 }

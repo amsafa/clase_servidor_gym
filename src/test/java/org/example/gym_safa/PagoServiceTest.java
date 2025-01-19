@@ -11,14 +11,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -86,4 +89,53 @@ public class PagoServiceTest {
         assertEquals(150.0, totalGastado, 0.01, "El total gastado debe ser la suma de los precios de las membresías asociadas.");
         verify(socioRepository, times(1)).findById(1); // Verifica que el repositorio fue llamado una vez
     }
+
+    @Test
+    void testImporteGastadoNegativo() {
+        // Caso 1: El socio no existe
+        Integer idSocioInexistente = 1;
+        Mockito.when(socioRepository.findById(idSocioInexistente)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            pagoService.importeGastado(idSocioInexistente);
+        });
+        assertEquals("El socio con ID 1 no existe en el sistema.", exception.getMessage());
+
+        // Caso 2: El socio no tiene membresías registradas
+        Integer idSocioSinMembresias = 2;
+        Socio socioSinMembresias = new Socio();
+        socioSinMembresias.setId(idSocioSinMembresias);
+        socioSinMembresias.setVencimientos(Collections.emptyList());
+
+        Mockito.when(socioRepository.findById(idSocioSinMembresias)).thenReturn(Optional.of(socioSinMembresias));
+
+        exception = assertThrows(RuntimeException.class, () -> {
+            pagoService.importeGastado(idSocioSinMembresias);
+        });
+        assertEquals("El socio con ID 2 no tiene membresías registradas.", exception.getMessage());
+
+        // Caso 3: El socio no ha pagado su última membresía
+        Integer idSocioSinPago = 3;
+        Vencimiento vencimiento = new Vencimiento();
+        vencimiento.setFecha_inicio(LocalDate.now().minusMonths(2));
+        vencimiento.setFecha_fin(LocalDate.now().minusMonths(1));
+        vencimiento.setMembresia(new Membresia(50.0));
+
+        Socio socioSinPago = new Socio();
+        socioSinPago.setId(idSocioSinPago);
+        socioSinPago.setVencimientos(Collections.singletonList(vencimiento));
+        socioSinPago.setPagos(Collections.emptyList()); // Sin pagos
+
+        Mockito.when(socioRepository.findById(idSocioSinPago)).thenReturn(Optional.of(socioSinPago));
+
+        exception = assertThrows(RuntimeException.class, () -> {
+            pagoService.importeGastado(idSocioSinPago);
+        });
+        assertEquals("El socio con ID 3 no ha pagado su última membresía.", exception.getMessage());
     }
+
+
+
+
+
+}
