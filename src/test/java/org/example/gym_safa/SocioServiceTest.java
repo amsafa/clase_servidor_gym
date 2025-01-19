@@ -12,45 +12,45 @@ import com.example.gym_safa.servicios.SocioService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = GymSafaApplication.class)
 @AutoConfigureTestDatabase
-@ContextConfiguration(classes = {SocioService.class})
 public class SocioServiceTest {
 
-    @Mock
-    private VencimientoRepository vencimientoRepository;
-
-    @InjectMocks
+    @Autowired
     private SocioService socioService;
 
-    @Mock
+    @MockBean // Mock del repositorio de vencimientos para simular la base de datos
+    private VencimientoRepository vencimientoRepository;
+
+    @MockBean
     private SocioRepository socioRepository;
 
     @BeforeEach
-    public void setUp() {
-        // Inicialización de los mocks sin usar @ExtendWith
+    public void inicializacionDatos() {
         MockitoAnnotations.openMocks(this); // Inicializa los mocks manualmente
     }
 
     @Test
     public void testRenovarAbonoPositivo() {
         // GIVEN: Un socio con un vencimiento activo
-
         Integer idSocio = 1;
 
         Vencimiento vencimientoAntiguo = new Vencimiento();
@@ -63,7 +63,7 @@ public class SocioServiceTest {
         vencimientos.add(vencimientoAntiguo);
 
         // Configurar el mock del repositorio
-        Mockito.when(vencimientoRepository.findBySocioId(idSocio))
+        when(vencimientoRepository.findBySocioId(idSocio))
                 .thenReturn(vencimientos);
 
         // WHEN: Se renueva la membresía del socio
@@ -71,16 +71,17 @@ public class SocioServiceTest {
 
         // THEN: La membresía debe renovarse correctamente
         Assertions.assertNotNull(resultado, "El resultado no debe ser nulo");
-        Assertions.assertEquals(vencimientoAntiguo.getFecha_fin().plusMonths(12), resultado.getFechaFin(),
+        assertEquals(vencimientoAntiguo.getFecha_fin().plusMonths(12), resultado.getFechaFin(),
                 "La fecha de fin debe ser 12 meses después del vencimiento anterior");
 
         // Verificar que el método save fue llamado exactamente una vez
         verify(vencimientoRepository, times(1)).save(Mockito.any(Vencimiento.class));
 
         // Verificar que el mensaje de renovación exitosa esté presente
-        Assertions.assertEquals("Renovación exitosa", resultado.getMensaje(),
+        assertEquals("Renovación exitosa", resultado.getMensaje(),
                 "El mensaje debe ser 'Renovación exitosa'");
     }
+
 
     @Test
     void testRenovarAbonoNegativo() {
@@ -88,21 +89,21 @@ public class SocioServiceTest {
         Integer socioId = 1;
 
         // Configurar el mock para que devuelva una lista vacía
-        Mockito.when(vencimientoRepository.findBySocioId(socioId)).thenReturn(Collections.emptyList());
+        when(vencimientoRepository.findBySocioId(socioId)).thenReturn(Collections.emptyList());
 
         // WHEN & THEN: Se lanza una excepción al intentar renovar la membresía
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             socioService.renovarMembresiaSocio(socioId);
         });
 
-        Assertions.assertEquals("Este socio no tiene abono contratado", exception.getMessage());
+        assertEquals("Este socio no tiene abono contratado", exception.getMessage());
 
         // Verificar que el método save no fue llamado
-        verify(vencimientoRepository, Mockito.never()).save(Mockito.any(Vencimiento.class));
+        verify(vencimientoRepository, never()).save(Mockito.any(Vencimiento.class));
     }
 
     @Test
-    void TestEditarSocioPositivo () {
+    void TestEditarSocioPositivo() {
         // Given: Datos de un socio válidos
         SocioDTO socioDTO = new SocioDTO();
         socioDTO.setId(1);
@@ -114,10 +115,8 @@ public class SocioServiceTest {
         socioDTO.setFechaRegistro(LocalDate.of(2021, 1, 1));
         socioDTO.setTelefono("123456789");
 
-        // Mock para la validación de que el DNI no está duplicado
-        when(socioRepository.findByDNI(socioDTO.getDni())).thenReturn(Optional.empty());  // No existe el DNI
+        when(socioRepository.findByDNI(socioDTO.getDni())).thenReturn(Optional.empty());
 
-        // Mock del repositorio para guardar el socio
         Socio socio = new Socio();
         socio.setId(socioDTO.getId());
         socio.setNombre(socioDTO.getNombre());
@@ -130,10 +129,8 @@ public class SocioServiceTest {
 
         when(socioRepository.save(any(Socio.class))).thenReturn(socio);
 
-        // When: Se llama al método a probar
         SocioDTO resultado = socioService.guardarModificarSocio(socioDTO);
 
-        // Then: Se verifican los resultados y comportamientos
         assertEquals(socioDTO.getId(), resultado.getId());
         assertEquals(socioDTO.getNombre(), resultado.getNombre());
         assertEquals(socioDTO.getDni(), resultado.getDni());
@@ -143,77 +140,56 @@ public class SocioServiceTest {
         assertEquals(socioDTO.getEmail(), resultado.getEmail());
         assertEquals(socioDTO.getFechaRegistro(), resultado.getFechaRegistro());
 
-        // Verificar que el método save fue llamado exactamente una vez
         verify(socioRepository, times(1)).save(any(Socio.class));
     }
 
     @Test
     void TestEditarSocioNegativo() {
-        // Given: Datos de un socio con un DNI y Email válidos pero duplicados en la base de datos
         SocioDTO socioDTO = new SocioDTO();
         socioDTO.setId(1);
         socioDTO.setNombre("Juan Perro");
         socioDTO.setCuentaBancaria(1234567890);
-        socioDTO.setDni("12345678A");  // DNI válido pero duplicado
-        socioDTO.setEmail("juan@correo.com");  // Email válido pero duplicado
+        socioDTO.setDni("12345678A");
+        socioDTO.setEmail("juan@correo.com");
         socioDTO.setFechaNacimiento(LocalDate.of(1990, 1, 1));
         socioDTO.setFechaRegistro(LocalDate.of(2021, 1, 1));
         socioDTO.setTelefono("123456789");
 
-        // Simulamos que ya existe un socio con el mismo DNI
         Socio socioExistenteDni = new Socio();
         socioExistenteDni.setId(2);
         socioExistenteDni.setDNI("12345678A");
         when(socioRepository.findByDNI(socioDTO.getDni())).thenReturn(Optional.of(socioExistenteDni));
 
-        // Simulamos que ya existe un socio con el mismo Email
         Socio socioExistenteEmail = new Socio();
         socioExistenteEmail.setId(3);
         socioExistenteEmail.setEmail("juan@correo.com");
         when(socioRepository.findByEmail(socioDTO.getEmail())).thenReturn(Optional.of(socioExistenteEmail));
 
-        // When: Se lanza una excepción porque el DNI ya está registrado
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             socioService.guardarModificarSocio(socioDTO);
         });
-
-        // Then: Se verifica que el mensaje de error sea el esperado para el DNI duplicado
-        Assertions.assertEquals("El DNI ya está registrado en otro socio", exception.getMessage());
-
-        // Verificar que el método save no fue llamado
+        assertEquals("El DNI ya está registrado en otro socio", exception.getMessage());
         verify(socioRepository, never()).save(any(Socio.class));
 
-        // Cambiar el escenario: ahora probamos el caso del Email duplicado sin DNI duplicado
-        socioDTO.setDni("98765432B"); // Asignamos un DNI diferente
-        socioDTO.setEmail("juan@correo.com"); // Email duplicado
-
-        // When: Se lanza una excepción porque el Email ya está registrado
-        exception = Assertions.assertThrows(RuntimeException.class, () -> {
+        socioDTO.setDni("98765432B");
+        exception = assertThrows(RuntimeException.class, () -> {
             socioService.guardarModificarSocio(socioDTO);
         });
-
-        // Then: Se verifica que el mensaje de error sea el esperado para el Email duplicado
-        Assertions.assertEquals("El email ya está registrado en otro socio", exception.getMessage());
-
-        // Verificar que el método save no fue llamado
+        assertEquals("El email ya está registrado en otro socio", exception.getMessage());
         verify(socioRepository, never()).save(any(Socio.class));
     }
 
     @Test
     void TestEliminarUsuarioPositivo() {
-        // Given: Datos de prueba
         Integer socioId = 1;
         Socio socio = new Socio();
         socio.setId(socioId);
 
-        // when: Configuración de mocks
-        when(socioRepository.findById(socioId)).thenReturn(java.util.Optional.of(socio));
+        when(socioRepository.findById(socioId)).thenReturn(Optional.of(socio));
         doNothing().when(socioRepository).deleteById(socioId);
 
-        // Llamada al método
         String result = socioService.deleteSocios(socioId);
 
-        // Then: Verificaciones
         assertEquals("Socio eliminado", result);
         verify(socioRepository, times(1)).findById(socioId);
         verify(socioRepository, times(1)).deleteById(socioId);
@@ -221,18 +197,16 @@ public class SocioServiceTest {
 
     @Test
     void TestEliminarUsuarioNegativo() {
-        // Given: Un socio ID inexistente
         Integer socioId = 1;
-        when(socioRepository.findById(socioId)).thenReturn(java.util.Optional.empty());
+        when(socioRepository.findById(socioId)).thenReturn(Optional.empty());
 
-        // When: Se intenta eliminar un socio con ID inexistente
         SocioService.SocioNotFoundException exception = assertThrows(SocioService.SocioNotFoundException.class, () -> {
             socioService.deleteSocios(socioId);
         });
 
-        // Then: Se lanza una excepción con el mensaje esperado
         assertEquals("Socio no encontrado.", exception.getMessage());
         verify(socioRepository, times(1)).findById(socioId);
         verify(socioRepository, never()).deleteById(socioId);
     }
 }
+

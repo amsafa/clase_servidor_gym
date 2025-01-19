@@ -63,10 +63,10 @@ public class MembresiaServiceTest {
         when(membresiaRepository.findAll()).thenReturn(List.of(membresia1, membresia2));
 
 
-        //WHEN
+        //WHEN: Obtenemos todas las membresías
        List <MembresiaDTO> membresias = service.getAllMembresias();
 
-        //THEN
+        //THEN: Verificamos que se han obtenido las dos membresías
         assertEquals(2, membresias.size());
     }
 

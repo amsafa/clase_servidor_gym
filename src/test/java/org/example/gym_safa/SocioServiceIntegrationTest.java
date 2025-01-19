@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 public class SocioServiceIntegrationTest {
 
-    @InjectMocks
+    @InjectMocks //Inyecta el mock en la clase a testear (SocioService) y se encarga de inyectar los mocks que se han anotado con @Mock en esta clase
     private SocioService service; //REAL
 
     @Mock

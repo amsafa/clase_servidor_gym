@@ -21,9 +21,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
 
@@ -38,8 +37,8 @@ public class PagoServiceTest {
     private PagoService pagoService;
 
     @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
+    public void inicializarDatos() {
+        MockitoAnnotations.openMocks(this); // Inicializar los mocks y la clase a testear antes de cada test
     }
 
     @Test
@@ -86,6 +85,7 @@ public class PagoServiceTest {
         Double totalGastado = pagoService.importeGastado(1);
 
         // Then: Validar el resultado
+        assertNotNull(totalGastado, "El total gastado no debe ser nulo.");
         assertEquals(150.0, totalGastado, 0.01, "El total gastado debe ser la suma de los precios de las membresías asociadas.");
         verify(socioRepository, times(1)).findById(1); // Verifica que el repositorio fue llamado una vez
     }
@@ -132,6 +132,7 @@ public class PagoServiceTest {
             pagoService.importeGastado(idSocioSinPago);
         });
         assertEquals("El socio con ID 3 no ha pagado su última membresía.", exception.getMessage());
+        assertNull(exception.getCause()); // No hay causa para la excepción en este caso
     }
 
 
