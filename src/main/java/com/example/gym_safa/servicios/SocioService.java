@@ -124,16 +124,27 @@ public class SocioService {
 
     //Ejercicio 6
 
+    public class SocioNotFoundException extends RuntimeException {
+        public SocioNotFoundException(String message) {
+            super(message);
+        }
+    }
+
+
     public String deleteSocios(Integer id) {
         try {
-            Socio socio = socioRepository.findById(id).orElseThrow(() -> new RuntimeException("Socio no encontrado."));
+            Socio socio = socioRepository.findById(id)
+                    .orElseThrow(() -> new SocioNotFoundException("Socio no encontrado."));
 
             socioRepository.deleteById(id);
             return "Socio eliminado";
+        } catch (SocioNotFoundException e) {
+            throw e;
         } catch (Exception e) {
             return e.getMessage();
         }
     }
+
 
     /**
      * Este método devuelve toda la asistencia del socio

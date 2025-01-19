@@ -219,6 +219,47 @@ public class SocioServiceTest {
         verify(socioRepository, never()).save(any(Socio.class));
     }
 
+    @Test
+    void TestEliminarUsuarioPositivo() {
+        // Given: Datos de prueba
+        Integer socioId = 1;
+        Socio socio = new Socio();
+        socio.setId(socioId);
+
+        // when: Configuración de mocks
+        when(socioRepository.findById(socioId)).thenReturn(java.util.Optional.of(socio));
+        doNothing().when(socioRepository).deleteById(socioId);
+
+        // Llamada al método
+        String result = socioService.deleteSocios(socioId);
+
+        // Then: Verificaciones
+        assertEquals("Socio eliminado", result);
+        verify(socioRepository, times(1)).findById(socioId);
+        verify(socioRepository, times(1)).deleteById(socioId);
+    }
+
+    @Test
+    void TestEliminarUsuarioNegativo() {
+        // Given: Un socio ID inexistente
+        Integer socioId = 1;
+        when(socioRepository.findById(socioId)).thenReturn(java.util.Optional.empty());
+
+        // When: Se intenta eliminar un socio con ID inexistente
+        SocioService.SocioNotFoundException exception = assertThrows(SocioService.SocioNotFoundException.class, () -> {
+            socioService.deleteSocios(socioId);
+        });
+
+        // Then: Se lanza una excepción con el mensaje esperado
+        assertEquals("Socio no encontrado.", exception.getMessage());
+        verify(socioRepository, times(1)).findById(socioId);
+        verify(socioRepository, never()).deleteById(socioId);
+    }
+
+
+
+
+
 
 
 
