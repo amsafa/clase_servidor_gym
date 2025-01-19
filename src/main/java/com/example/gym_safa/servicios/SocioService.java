@@ -119,7 +119,7 @@ public class SocioService {
     /**
      * Elimina un socio por su id
      *
-     * @param id
+     * @param
      */
 
     //Ejercicio 6

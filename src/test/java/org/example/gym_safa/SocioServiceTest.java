@@ -12,21 +12,17 @@ import com.example.gym_safa.servicios.SocioService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
-
 import java.time.LocalDate;
 import java.util.*;
-
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -34,8 +30,6 @@ import static org.mockito.Mockito.*;
 @SpringBootTest(classes = GymSafaApplication.class)
 @AutoConfigureTestDatabase
 @ContextConfiguration(classes = {SocioService.class})
-@ExtendWith(MockitoExtension.class) // Permite usar Mockito
-
 public class SocioServiceTest {
 
     @Mock
@@ -44,22 +38,18 @@ public class SocioServiceTest {
     @InjectMocks
     private SocioService socioService;
 
-    public SocioServiceTest() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Mock
     private SocioRepository socioRepository;
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this); // Inicializa los mocks antes de cada test
+        // Inicialización de los mocks sin usar @ExtendWith
+        MockitoAnnotations.openMocks(this); // Inicializa los mocks manualmente
     }
-
 
     @Test
     public void testRenovarAbonoPositivo() {
-        //GIVEN: Un socio con un vencimiento activo
+        // GIVEN: Un socio con un vencimiento activo
 
         Integer idSocio = 1;
 
@@ -79,8 +69,6 @@ public class SocioServiceTest {
         // WHEN: Se renueva la membresía del socio
         VencimientoDTO resultado = socioService.renovarMembresiaSocio(idSocio);
 
-
-
         // THEN: La membresía debe renovarse correctamente
         Assertions.assertNotNull(resultado, "El resultado no debe ser nulo");
         Assertions.assertEquals(vencimientoAntiguo.getFecha_fin().plusMonths(12), resultado.getFechaFin(),
@@ -92,7 +80,6 @@ public class SocioServiceTest {
         // Verificar que el mensaje de renovación exitosa esté presente
         Assertions.assertEquals("Renovación exitosa", resultado.getMensaje(),
                 "El mensaje debe ser 'Renovación exitosa'");
-
     }
 
     @Test
@@ -110,11 +97,9 @@ public class SocioServiceTest {
 
         Assertions.assertEquals("Este socio no tiene abono contratado", exception.getMessage());
 
-
         // Verificar que el método save no fue llamado
         verify(vencimientoRepository, Mockito.never()).save(Mockito.any(Vencimiento.class));
     }
-
 
     @Test
     void TestEditarSocioPositivo () {
@@ -160,12 +145,7 @@ public class SocioServiceTest {
 
         // Verificar que el método save fue llamado exactamente una vez
         verify(socioRepository, times(1)).save(any(Socio.class));
-
-
-
     }
-
-
 
     @Test
     void TestEditarSocioNegativo() {
@@ -255,28 +235,4 @@ public class SocioServiceTest {
         verify(socioRepository, times(1)).findById(socioId);
         verify(socioRepository, never()).deleteById(socioId);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
